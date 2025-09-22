@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --app-primary: #04306f;
   --app-primary-hover: #6c9ddd;
 }
@@ -33,7 +33,514 @@
   background-color: var(--app-primary-hover);
   color: #fff;
 }
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
 
 body {
   font-family: "Manrope", sans-serif !important;
+  height: 100vh !important;
+}
+
+.font10 {
+  font-size: 10px;
+}
+
+
+.font8 {
+  font-size: 8px;
+}
+.font12 {
+  font-size: 12px;
+}
+
+.font14 {
+  font-size: 14px;
+}
+
+.font16 {
+  font-size: 16px;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.font20 {
+  font-size: 20px;
+}
+
+.cr-pointer {
+  cursor: pointer;
+}
+
+.font-weight1 {
+  font-weight: 500;
+}
+
+.font-weight2 {
+  font-weight: 600;
+}
+
+.font-weight3 {
+  font-weight: 400;
+}
+
+.font-weight4 {
+  font-weight: 700;
+}
+
+/* Make pagination center-aligned with circular buttons */
+.antPagination {
+  justify-content: center !important;
+}
+
+.custom-pagination-btn,
+.custom-pagination-number {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: bold;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: 0.2s all ease;
+}
+
+.custom-pagination-number {
+  background: white;
+  color: #0d0d1d;
+}
+
+.antPagination-item-active .custom-pagination-number,
+.custom-pagination-number:hover {
+  background-color: #1f3547;
+  color: white;
+}
+
+.custom-pagination-btn {
+  background-color: #f3f3f3;
+  color: #333;
+  border: 1px solid #eee;
+}
+:root {
+  --app-primary: #263e50;
+  --app-primary-hover: #6c9ddd;
+  --bluish-gray: #73a6d9;
+  --defaultBorder: #d3d3d3;
+  --avatarBg: #f99f9f;
+  --app-secondaryBg: #f0f8ff;
+  --app-arrowBg: #e1edfe;
+  --tableBorder: #ccc;
+  --checkboxBoarder: #d4c9c9;
+  --tableRow-color: #656f7d;
+  --defaultBorder: #d3d3d3;
+  --avatarBg: #f99f9f;
+  --app-secondaryBg: #f0f8ff;
+  --app-arrowBg: #e1edfe;
+  --tableBorder: #ccc;
+  --checkboxBoarder: #d4c9c9;
+  --patientsActiveBtn: #deeffd;
+  --patientsActiveBtnBorder: #a8b3bd;
+  --patientsButtonsContainer: #eef0f2;
+  --tableBackground: #fafcff;
+  /* colors */
+  --default-Text-color: #000;
+  --btnColor: #2983e3;
+  --iconColor: #a19696;
+  --declinedColor: #f01010;
+  --defaultColor: #fff;
+  --grayColor: #7e7e7e;
+  --lightBlue: #ebf3fe;
+  --processStatusColor: #0078d4;
+  --approvedColor: #235952;
+  --borderColor: #b6b6b6;
+  --links: rgba(51, 154, 240, 1);
+  --completedColor: #008844;
+  --patientsActiveLegendsColor: #0162a2;
+  --links: rgba(51, 154, 240, 1);
+  --iconDeclinedColor: #efdcdc;
+  --patientsActiveLegendsColor: #0162a2;
+  --links: rgba(51, 154, 240, 1);
+  --approvedBgColor: #daf1ee;
+  --declinedBgColor: #f01010;
+  --declinedBtnColor: #9a4444;
+  --approvedBgColor: #daf1ee;
+  --declinedBgColor: #efdcdc;
+  --pendingBgColor: #cce9ff;
+  --patientsLegendsColor: #d9d9d9;
+  --patientsActiveLegendsColor: #0162a2;
+  --links: rgba(51, 154, 240, 1);
+  --hccBG: #f5fff5;
+  --carGapBG: #fffaf5;
+  --deletedBG: #fdf7f8;
+  --hccBtn: #059d02;
+  --carGapBtn: #ff9209;
+  --deletedBtn: #be3144;
+  --filterBorder: #a8b3bd;
+  --filterBG: #f7f8f9;
+  --borderColor: #dce7ef;
+  /* sidebar */
+  --sideBarUserProfile: #8cd1fe;
+  --activeMenuBg: #ccebff;
+  --headerUserBG: #804000;
+  --sideBarColor: #f5f5f5;
+  --navBarBG: #263e50;
+  --userProfileBG: #547187;
+  --userProfileBorder: #3d5262;
+  --logoutBtn: #dd6b55;
+  /* patientDetails   */
+  --hccCardIconColor: #064bac;
+  --captureSectionBgColor: #064bac;
+  --sectionBgColor: #d9d8f3;
+  --validMoveIconColor: #04b700;
+  --suggestedMoveIconColor: #ff9209;
+  --deleteMoveIconColor: #be3144;
+  --descriptionColor: #2d2525;
+  --rxCmsValueColor: #656f7d;
+  --rxCmsBorderColor: #a8b3bd;
+  --meatAvatarTrueBgColor: #0d9bd8;
+  --meatAvatarFalseBgColor: #d80d0d;
+  --selectColor: #e6eeff;
+  --commentsBoxBG: #f0f6fe;
+  --sideBarUserProfile: #8cd1fe;
+  --activeMenuBg: #ccebff;
+  --headerUserBG: #804000;
+  --sideBarColor: #f5f5f5;
+  --navBarBG: #263e50;
+  --userProfileBG: #547187;
+  --userProfileBorder: #3d5262;
+  --logoutBtn: #dd6b55;
+  --comboHeaderBgColor: #edf2f7;
+  /* careGap */
+  --historyBtnBG: #dde3ee;
+  --historyBtnColor: #384b70;
+  --deleteBtnColor: #ff5e5e;
+  --holdTextColor: #ad94fa;
+  --holdBG: #ddd5f8;
+  --notComputedText: #e8cfcf;
+  --processedTextColor: #3a9b94;
+  --processedTextBG: #daf1ef;
+  --processingTextColor: #5da9e4;
+  --processingBGColor: #c2e1f9;
+  --failedText: #fcc;
+  --computedText: #285563;
+  --computedBG: #cceeff;
+  --holdText: rgb(245, 106, 0);
+  --auditTextColor: #ffebad;
+  --reAuditText: #ffd1a3;
+  --audited-anotherText: #d4eaed;
+  --not-started-text: #e4941c;
+  --not-started-BG: #faead1;
+  --auditBtnHccColor: #377880;
+  --declineBtnHccBg: #ffdede;
+  --re-AuditBtnHccColor: #964b00;
+  --auditPendingBtnHcc: #e28213;
+  --auditPendingBtnHccBG: #fbe7d0;
+  --auditHoldBtnHcc: #ce9900;
+  --add_text_Color: #3a9b94;
+  --add_text_Colo_Bg: #baf6ea;
+  --completedBtn_bg: #daf1ef;
+  --declinedBtn_Hcc: #ff0000;
+  --declinedBtn_Hcc_bg: #fcc;
+  --holdBtnHccs: #ad94fa;
+  --holdBtnHccs_bg: #ddd5f8;
+  --pendingBtn: #5da9e4;
+  --pendingBtnBg: #c2e1f9;
+  --customColorBg: #f5f9ff;
+  --disableUser: #0000001a;
+  --provider-bg: #f8f5ff;
+  --provider-btn: #6f2afe;
+  --total-bg: #edd8f3;
+  --not-assigned-bg: #cee9fd;
+  --assigned-bg: #ffefcc;
+  --completed-bg: #cdfed2;
+  --not-completed-bg: #f5d1cc;
+}
+body.loginBg {
+  /* background-image: url("../../assets/authFlow/loginBackground.webp") !important; */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 60px;
+}
+
+/* styles/globals.css */
+.next-build-indicator {
+  display: none !important;
+}
+
+.font {
+  font-size: 10px;
+}
+
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.font1 {
+  font-size: 12px;
+}
+
+.font2 {
+  font-size: 14px;
+}
+
+.font3 {
+  font-size: 16px;
+}
+
+.font4 {
+  font-size: 18px;
+}
+
+.font5 {
+  font-size: 20px;
+}
+
+.hccCardOverallFont {
+  font-size: 10px;
+}
+
+.font9 {
+  font-size: 8px;
+}
+
+.cr-pointer {
+  cursor: pointer;
+}
+
+.font-weight1 {
+  font-weight: 500;
+}
+
+.font-weight2 {
+  font-weight: 600;
+}
+
+.font-weight3 {
+  font-weight: 400;
+}
+
+.font-weight4 {
+  font-weight: 700;
+}
+
+.app-button:disabled {
+  border: 1px solid #c6c2c2 !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+  background: rgba(217, 0, 0, 0.04) !important;
+}
+
+.ml-5 {
+  margin-left: 5px !important;
+}
+
+.overFlow {
+  overflow-y: scroll !important;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.2
+  ); /* Light black thumb with some transparency */
+  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
+  /* Light black thumb with some transparency */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  /* Transparent track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Darker on hover */
+}
+
+.btns-primary {
+  padding: 7px;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  border: none;
+}
+
+.btn-app-primary {
+  background-color: var(--app-primary);
+  color: var(--defaultColor);
+  text-transform: capitalize;
+}
+
+.btn-app-primary:hover {
+  background-color: var(--app-primary-hover);
+  color: var(--defaultColor);
+}
+
+.btn-app-outline-primary {
+  color: var(--app-primary);
+  border: 1px solid var(--app-primary);
+  background: transparent;
+  text-transform: capitalize;
+  padding: 6px;
+}
+
+.btn-app-outline-primary:hover {
+  background-color: var(--app-primary-hover);
+  color: var(--defaultColor);
+}
+
+.customSkeleton .ant-skeleton .ant-skeleton-content .ant-skeleton-title {
+  height: 20px !important;
+  width: 100% !important;
+  margin-top: 3px;
+}
+body {
+  font-family: "Manrope", sans-serif !important;
+  height: 100vh !important;
+}
+
+.pagination.ant-pagination .ant-pagination-options {
+  display: none !important;
+}
+.ant-pagination-item-container {
+  width: 100%;
+}
+.pagination .ant-pagination .ant-pagination-item,
+.ant-pagination-item-ellipsis,
+.ant-pagination-item-link {
+  display: flex;
+  background-color: var(--defaultColor) !important;
+  border-radius: 7px !important;
+  color: var(--default-Text-color) !important;
+  height: 34px !important;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--patientsLegendsColor);
+}
+
+.pagination .ant-pagination .ant-pagination-item-active {
+  border: none !important;
+  background-color: var(--app-primary) !important;
+}
+
+.pagination .ant-pagination .ant-pagination-item-active a {
+  color: var(--defaultColor) !important;
+}
+/* dashboard chart */
+
+.pieChart > div:first-child > div:first-child > canvas {
+  height: 140px !important;
+  width: 100% !important;
+}
+.pieChart > div:first-child {
+  height: 140px !important;
+}
+.pieChart > div:first-child > div:first-child {
+  height: 140px !important;
+}
+/*  end*/
+.customPicker .ant-picker-outlined {
+  width: 309px !important;
+  height: 100% !important;
+}
+.commonTableAction .ant-switch.ant-switch-checked {
+  background-color: #263e50 !important;
+}
+
+.customCheckbox[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  cursor: pointer;
+
+  background-color: var(--navBarBG);
+  transition: background-color 0.3s, border-color 0.3s;
+  appearance: none !important;
+  position: relative;
+}
+.customCheckbox[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  width: 19px;
+  height: 18px;
+  top: 0;
+  /* left: -1px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  border: 1px solid var(--navBarBG);
+  background-color: var(--defaultColor);
+  color: var(--defaultColor);
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-radius: 4px;
+}
+.customCheckbox[type="checkbox"]:checked::before {
+  content: "\2713";
+  font-size: 14px;
+  color: var(--defaultColor);
+  background-color: var(--checkboxCheckedBG);
+}
+.customCheckbox:disabled {
+  background-color: var(--disabledBG);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.passSelect
+  .ant-select-show-search:where(
+    .css-dev-only-do-not-override-1v613y0
+  ).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  background-color: #d3eaf8 !important;
+  color: #187bd4 !important;
+  border: 1px solid #187bd4 !important;
+  cursor: pointer !important;
+}
+.failSelect
+  .ant-select-show-search:where(
+    .css-dev-only-do-not-override-1v613y0
+  ).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  cursor: pointer !important;
+  background-color: #ffcccc !important;
+  color: #ff3d3d !important;
+  border: 1px solid #ff3d3d !important;
+}
+.ant-progress .ant-progress-inner {
+  background-color: #d9d9d9 !important;
+}
+.customPatientsSelect .ant-select-selector {
+  width: 200px !important;
+}
+.custom-datepicker {
+  transform: translateY(-30px) !important; /* Adjust position manually */
+}
+.dosSelector .ant-select-selector {
+  height: 75px !important;
+  overflow-y: scroll !important;
+}
+.notificationCard > .ant-card .ant-card-body {
+  padding: 7px !important;
+}
+.ant-card .ant-card-body {
+  height: 100% !important;
+}
+.ant-layout-footer {
+  padding: 0px;
 }

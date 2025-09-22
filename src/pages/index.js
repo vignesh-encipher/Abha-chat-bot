@@ -1,12 +1,40 @@
+import { useEffect } from "react";
+import { useMsal } from "@azure/msal-react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import PageLoading from "@/components/page-loading";
+import { setStorage } from "@/utils/storages";
 
-const Component = () => {
+
+export default function Home() {
+  const { instance, accounts, inProgress } = useMsal();
   const router = useRouter();
-  useEffect(() => {
-    router.push("/home");
-  });
-  return <div></div>;
-};
 
-export default Component;
+  useEffect(() => {
+    // if (inProgress !== "none") return;
+
+    // // Always redirect to login when accounts are empty
+    // if (accounts.length === 0) {
+    //   console.log("No session found. Forcing Outlook SSO login...");
+
+    //   // Use prompt=login to force MS login page even if SSO cookie is present
+    //   instance.loginRedirect({
+    //     prompt: "login", // ✅ Forces user to re-enter credentials
+    //   }).catch((error) => {
+    //     console.error("Login error:", error);
+    //   });
+
+    //   return;
+    // }
+
+    // // Already logged in
+    // if (accounts.length > 0) {
+    //   setStorage("token", accounts[0].idToken)
+    //   console.log("✅ User authenticated. Redirecting to dashboard...");
+    //   router.push("/patient");
+    // }
+    router.push("/patient");
+  }, [instance, accounts, inProgress, router]);
+
+  return <PageLoading />;
+}
+

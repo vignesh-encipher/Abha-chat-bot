@@ -1,0 +1,62 @@
+.container {
+  gap: 20px;
+  padding: 20px 0px;
+}
+.filterContainer{
+    height: 32px !important;
+}
+@media screen and (max-width: 1396.36px) {
+    .filterTitle {
+      font-size: 14px !important;
+    }
+    .filterContainer{
+      height: 28px !important;
+      font-size: 12px !important;
+    }
+    .filterBox{
+      max-width: 14%;
+    }
+    .selectFilter{
+      height: 28px !important;
+    }
+  }
+@media screen and (max-width: 1228.80px) {
+    .filterTitle {
+      font-size: 12px !important;
+      margin-right: 4px !important;
+    }
+    .filterContainer{
+      height: 26px !important;
+      font-size: 10px !important;
+    }
+    .filterBox{
+      max-width: 14%;
+    }
+    .selectFilter{
+      height: 26px !important;
+    }
+  }
+@media screen and (max-width: 1024px) {
+  .filterTitle {
+    font-size: 10px !important;
+    margin-right: 6px !important;
+  }
+  .filterContainer{
+    height: 22px !important;
+    font-size: 8px !important;
+  }
+  .filterBox{
+    max-width: 14%;
+  }
+  .selectFilter{
+    height: 22px !important;
+  }
+}
+.batchCountBtn {
+  background: #263e50;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  font-size: 12px;
+  padding: 4px 3px;
+}

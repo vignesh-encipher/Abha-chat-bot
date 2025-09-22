@@ -1,6 +1,6 @@
 import { checkStatus } from "./helper";
-import { getStorage } from "../storages";
 import { portalUrl, tokenKey } from "../config";
+import { getStorage } from "../storages";
 
 export async function requestPortal(url, options) {
   const token = await getStorage(tokenKey);
@@ -8,12 +8,26 @@ export async function requestPortal(url, options) {
   const actualOptions = {
     ...options,
     headers: {
-      Authorization: `${"Bearer" + " " + token}`,
+      // Authorization: `${"Bearer" + " " + token}`,
       "Content-Type": "application/json",
     },
   };
   return fetch(actualUrl, actualOptions).then(checkStatus);
 }
+
+export async function requestPortalFileDownload(url, options) {
+  const token = await getStorage(tokenKey);
+  const actualUrl = `${portalUrl}${url}`;
+  const actualOptions = {
+    ...options,
+    headers: {
+      // Authorization: `${"Bearer" + " " + token}`,
+      "Content-Type": "application/json",
+    },
+  };
+  return fetch(actualUrl, actualOptions).then((res) => res.blob());
+}
+
 
 export async function requestExternal(url, options, path) {
   const actualUrl = `${portalUrl}${url}`;
@@ -24,6 +38,15 @@ export async function requestExternal(url, options, path) {
       Authorization: `${"Bearer" + " " + token}`,
       "Content-Type": "application/json",
     },
+  };
+  return fetch(actualUrl, actualOptions).then(checkStatus);
+}
+
+export async function requestPortalFiles(url, options) {
+  const token = await getStorage(tokenKey);
+  const actualUrl = `${portalUrl}${url}`;
+  const actualOptions = {
+    ...options,
   };
   return fetch(actualUrl, actualOptions).then(checkStatus);
 }

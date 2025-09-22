@@ -1,0 +1,156 @@
+
+
+.tabMainContainer {
+  width:100%;
+  border-bottom: 1px solid #d9d9d9;
+}
+.header{
+  font-weight: 600;
+  font-size: 16px;
+}
+.activeTab {
+  background: #DEEFFD;
+  border: 0.5px solid #A8B3BD
+}
+
+.navbar {
+  border-bottom: 0.5px solid #A8B3BD;
+  height: 3px;
+  /* margin-left: -10px; */
+}
+.titleName {
+  padding: 10px 0px 0 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tabContainer {
+  padding: 3px 10px 3px 10px;
+  background: #EEF0F2;
+  gap: 5px;
+  border-radius: 5px;
+  width:auto;
+}
+.endContainer{
+  width:25%;
+}
+.tabItem {
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0px 15px 0 15px;
+}
+.btn{
+  background: #263E50;
+  color: white;
+}
+.nonActive {
+  width: 70px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.block {
+  background-color: #263e50;
+  border-radius: 3px;
+  color: white;
+  width: 70px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.icon {
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+}
+/* 110% subnav */
+@media screen and (max-width: 1396.36px) {
+  .tabContainer{
+    font-size: 12px;
+  }
+  .header{
+    font-size: 14px;
+  }
+  .SubNavContent{
+    font-size: 10px;
+  }
+  .headerContainer{
+    height: 50px;
+  }
+  .icon {
+    width: 12px;
+    height: 12px;
+  }
+  .nonActive {
+    font-size: 14px !important;
+  }
+  .tabItem {
+    height: 22px;
+  }
+}
+/* 125% subnav */
+
+@media screen and (max-width: 1228.80px) {
+  .tabContainer{
+    font-size: 11px;
+  }
+  .header{
+    font-size: 12px;
+  }
+  .SubNavContent{
+    font-size: 10px;
+  }
+  .headerContainer{
+    height: 45px;
+  }
+  .icon {
+    width: 10px;
+    height: 10px;
+  }
+  .nonActive {
+    font-size: 12px !important;
+  }
+  .tabItem {
+    height: 20px;
+  }
+}
+/* 150% subnav */
+@media screen and (max-width: 1024px) {
+  .tabContainer{
+    font-size: 8px;
+  }
+  .header{
+    font-size: 10px;
+  }
+  .SubNavContent{
+    font-size: 10px;
+  }
+  .headerContainer{
+    height: 40px;
+  }
+  .icon {
+    width: 9px;
+    height: 9px;
+    margin-right: 3px;
+  }
+  .nonActive {
+    font-size: 10px !important;
+  }
+  .tabItem {
+    height: 18px;
+  }
+}
+.backComponent{
+  border-right: 1px solid #A8B3BD;
+  font-size: 15px;
+  color:#221C1C;
+  padding: 0 10px;
+}

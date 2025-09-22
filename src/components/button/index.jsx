@@ -1,7 +1,7 @@
 import React from "react";
 import Style from "./style.module.css";
 
-const RegularButton = ({ type, name, onClick, width }) => {
+const RegularButton = ({ type, name, onClick, width,disabled,loading }) => {
   return (
     <button
       className={`btn mx-1 ${
@@ -9,8 +9,9 @@ const RegularButton = ({ type, name, onClick, width }) => {
       }`}
       onClick={onClick}
       style={{ width: width}}
+      disabled={disabled}
     >
-      {name}
+      {loading?"Loading...":name}
     </button>
   );
 };
