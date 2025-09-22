@@ -1,34 +1,54 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  poweredByHeader: false,
-  transpilePackages: ["rc-util", "@ant-design/icons-svg"],
-  devIndicators: {
-    buildActivity: false,
-    buildActivityPosition: "bottom-right",
-  },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.m?js$/,
-      resolve: {
-        fullySpecified: false,
+  /* config options here */
+  turbopack: {
+    root: process.cwd(),
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
-    });
-    return config;
+    },
   },
-
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
+  // Enable compression
+  compress: true,
+  // Enable source maps in development
+  productionBrowserSourceMaps: false,
+  // Configure webpack for better performance
+  webpack: (config, { dev, isServer }) => {
+    // Suppress React version warnings
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'react': require.resolve('react'),
+      'react-dom': require.resolve('react-dom'),
+    };
+    
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
           },
-        ],
-      },
-    ];
+          antd: {
+            test: /[\\/]node_modules[\\/]antd[\\/]/,
+            name: 'antd',
+            chunks: 'all',
+            priority: 10,
+          },
+          bootstrap: {
+            test: /[\\/]node_modules[\\/]bootstrap[\\/]/,
+            name: 'bootstrap',
+            chunks: 'all',
+            priority: 10,
+          },
+        },
+      };
+    }
+    return config;
   },
 };
 

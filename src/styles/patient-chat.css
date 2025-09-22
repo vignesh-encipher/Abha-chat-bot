@@ -1,0 +1,86 @@
+/* @keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+} */
+
+.modern-chat-message {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.modern-chat-message:hover {
+  transform: translateY(-2px);
+}
+
+.modern-send-button:hover {
+  animation: pulse 0.3s ease;
+}
+
+.patient-html-content h2 {
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #000;
+}
+
+.patient-html-content h3 {
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 16px 0 8px 0;
+}
+
+.patient-html-content ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.patient-html-content li {
+  margin: 6px 0;
+  line-height: 1.5;
+  color: #000;
+}
+
+.patient-html-content strong {
+  color: #000;
+  font-weight: 700;
+}
+
+.patient-html-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.patient-html-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.patient-html-content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.patient-html-content::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 2px;
+}
