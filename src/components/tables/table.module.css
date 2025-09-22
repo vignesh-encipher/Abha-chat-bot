@@ -1,0 +1,607 @@
+.classTable > thead {
+  background: #04306f !important;
+  /* linear-gradient(to right, var(--new-app-secondary), var(--new-app-secondary4), var(--new-app-secondary3))  */
+  border-radius: 10px !important;
+}
+
+.classThead > tr > th {
+  color: #fff !important;
+}
+.classTTotalhead {
+  color: #fff !important;
+}
+
+.classTable {
+  border-collapse: separate !important;
+  border-spacing: 0 3px !important;
+  /* width: 100%; */
+}
+
+.scrollContainer {
+  overflow-x: auto;
+  /* width: 100%; */
+}
+
+.scrollContainer {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Optional: Improve scroll UX */
+.scrollContainer::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.stickyColumn {
+  position: sticky;
+  left: 0;
+  background-color: white; /* Or match your table background */
+  z-index: 2;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+/* You can use nth-child to assign multiple sticky columns */
+.thead th:nth-child(-n+10),
+.tbody td:nth-child(-n+10) {
+  position: sticky;
+  left: calc(var(--index) * 100px); /* Adjust based on your column width */
+  z-index: 2;
+  background: white;
+}
+
+.scrollableColumn {
+  white-space: nowrap;
+}
+
+
+/* Optional: Improve scroll UX */
+.scrollContainer::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.stickyColumn {
+  position: sticky;
+  left: 0;
+  background-color: white; /* Or match your table background */
+  z-index: 2;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+/* You can use nth-child to assign multiple sticky columns */
+.thead th:nth-child(-n+10),
+.tbody td:nth-child(-n+10) {
+  position: sticky;
+  left: calc(var(--index) * 100px); /* Adjust based on your column width */
+  z-index: 2;
+  background: white;
+}
+
+.scrollableColumn {
+  white-space: nowrap;
+}
+
+.bodytable > td:first-child,
+.classThead > :first-child {
+  border-radius: 10px 0 0 10px !important;
+}
+.bodytable > td:last-child,
+.classThead > :last-child {
+  border-radius: 10px 0 0 10px !important;
+}
+
+.classTable table th {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+.classTable td:first-child,
+.classTable th:first-child {
+  border-radius: 10px 0 0 10px !important;
+}
+.classTable td:last-child,
+.classTable th:last-child {
+  border-radius: 0 10px 10px 0 !important;
+}
+
+.classTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.classThead {
+  background-color: #fafcff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.classTable &::-webkit-scrollbar {
+  width: 12px;
+}
+
+.classTable &::-webkit-scrollbar-thumb {
+  background-color: #04306f;
+}
+.classTable &::-webkit-scrollbar-track {
+  background-color: #fafcff;
+}
+
+.classContaineer {
+  /* overflow: scroll; */
+  padding: 8px;
+}
+.firstTdBorder {
+  border-top: 0.2px solid #e1e1e1;
+  border-left: 0.2px solid #e1e1e1;
+  border-bottom: 0.2px solid #e1e1e1;
+}
+.childBorder {
+  border-top: 0.2px solid #e1e1e1;
+
+  border-bottom: 0.2px solid #e1e1e1;
+}
+.lastBorder {
+  border-top: 0.2px solid #e1e1e1;
+  border-bottom: 0.2px solid #e1e1e1;
+}
+.classTable tbody tr td {
+  font-size: 13px;
+  font-weight: 400;
+  padding: 1px 15px;
+  color: #000 ;
+}
+.classTable tbody tr {
+  text-align: left;
+  margin-left: 20px;
+}
+.classTable thead tr {
+  text-align: left;
+  margin-left: 20px;
+}
+.classTable tbody tr:hover {
+  cursor: pointer;
+  border-radius: 10px 10px 10px 10px !important;
+  background-color:#ffff !important;
+}
+.classTable > thead > tr > th {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px;
+  text-transform: uppercase;
+}
+
+.highFlag path {
+  fill: #cf940a;
+}
+.lowFlag path {
+  fill: #87909e;
+}
+.normalFlag path {
+  fill: #4466ff;
+}
+.urgentFlag path {
+  fill: #D40B0B;
+}
+.custom-ant-select {
+  width: 100%;
+}
+
+.customAntSelect > div {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.customAntSelect > span {
+  display: none !important;
+}
+.subTitle {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.innerAlignments {
+  width: 100px;
+  text-align: center;
+}
+
+.rowStyle {
+  padding-left: 20px !important;
+}
+.fileprocessing {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.innerProcessingDiv {
+  width: 90px;
+  text-align: center;
+}
+.innerProcessingDiv:nth-child(1) {
+  position: relative;
+  left: -15px;
+}
+.innerProcessingDiv:nth-child(2) {
+  position: relative;
+  left: -20px;
+}
+.innerProcessingDiv:nth-child(3),
+.innerProcessingDiv:nth-child(4) {
+  position: relative;
+  left: -20px;
+}
+.innerProcessingDiv:nth-child(5),
+.innerProcessingDiv:nth-child(6) {
+  position: relative;
+  left: -15px;
+}
+.innerProcessingDiv:nth-child(7),
+.innerProcessingDiv:nth-child(8),
+.innerProcessingDiv:nth-child(9) {
+  position: relative;
+  left: -15px;
+}
+.innerProcessingDiv:nth-last-child(1) {
+  position: relative;
+  left: -13px;
+}
+.rowStyle2 {
+  padding-left: 50px !important;
+}
+.rowStyle3 {
+  padding-left: 80px !important;
+}
+.rowEmailStyle {
+  width: 300px !important;
+  padding-left: 50px !important;
+}
+.rowAudited {
+  width: 350px;
+  text-align: center;
+}
+.rowAlignment {
+  text-align: center;
+}
+
+.customChecked[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #d4c9c9;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.customChecked[type="checkbox"]:checked {
+  width: 22px;
+  height: 22px;
+  background-color: #0942C4;
+}
+.customChecked[type="checkbox"]::before {
+  content: "\2713";
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  margin-top: -2px;
+}
+.customChecked2[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #d4c9c9;
+  outline: none;
+  transition: background-color 0.3s;
+  background-color: #fff;
+}
+
+.customChecked2[type="checkbox"]:checked {
+  background-color: #fff;
+}
+.customChecked2[type="checkbox"]::before {
+  content: "\2713";
+  display: flex;
+  justify-content: center;
+  color: #04306f;
+  font-weight: 800;
+  font-size: 16px;
+  margin-top: -2px;
+}
+
+.customAntSelect > div {
+  border: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+.infoIcon{
+  color:#fff;
+  padding-left: 10px;
+
+}
+.customAntSelect > div {
+  border: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+@media (min-width: 1024px) and (max-width: 1450px){
+  .customTable{
+    overflow: scroll !important;;
+  }
+  }
+  .allocate {
+    /* width: 100px; */
+    /* width: 100px; */
+    height: 40px;
+    color: #241571 !important;
+    background: rgba(19, 61, 212, 0.15);
+    border: 1px solid #241571;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    margin-right: 10px;
+    margin-top: 25px;
+    border-radius: 8px;
+  }
+.filterBtn {
+  background-color: rgba(255, 255, 255, 1);
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.08);
+}
+.checkbox {
+  width: 22px;
+  height: 22px;
+}
+.scrollContainer {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.classTable {
+  min-width: 200px; 
+}
+.triggerButton {
+  width: 30%;
+  border: 1px solid #4a249d;
+  background-color: #e0d6f5;
+  color: #4a249d;
+  border-radius: 3px;
+  height: 27px;
+}
+.uploadButton {
+  width: 30%;
+
+  border: 1px solid #0B3674;
+  background-color: #CEE1FC;
+  color: #0B3674;
+  border-radius: 3px;
+  height: 27px;
+}
+
+.bodyCheckbox{
+width:20px;
+height: 20px;
+}
+.progreddBr {
+  width: 100%;
+
+  /* margin: auto; */
+}
+
+
+
+.totalRow{
+  background: #cee1fd !important;
+
+}
+.totalFirstTdBorder {
+  background: #04306f !important;
+  color: #fff !important;
+  text-align: center;
+}
+/* Ant Design table cell padding overrides */
+.classTable .ant-table-tbody > tr > td {
+  padding: 2px 8px !important;
+}
+
+.classTable .ant-table-thead > tr > th {
+  padding: 6px 8px !important;
+}
+
+/* Reduce row height further */
+.classTable .ant-table-tbody > tr {
+  height: 28px !important;
+}
+
+.classTable .ant-table-tbody > tr > td {
+  height: 28px !important;
+  vertical-align: middle;
+}
+
+/* Ensure content is vertically centered */
+.classTable .ant-table-tbody > tr > td > div {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+/* Additional Ant Design table styling */
+.classTable .ant-table {
+  font-size: 13px;
+}
+
+.classTable .ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5 !important;
+}
+
+/* Ensure proper alignment for different cell types */
+.classTable .ant-table-tbody > tr > td .ant-select {
+  margin: 0;
+}
+
+.classTable .ant-table-tbody > tr > td .ant-switch {
+  margin: 0;
+}
+
+/* Compact spacing for action buttons */
+.classTable .ant-table-tbody > tr > td .d-flex {
+  gap: 4px;
+}
+
+/* Ensure checkboxes are properly aligned */
+.classTable .ant-table-tbody > tr > td input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Override Ant Design CSS-in-JS with higher specificity */
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-cell,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-thead>tr>th,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-tbody>tr>th,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-tbody>tr>td,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper tfoot>tr>th,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper tfoot>tr>td {
+  padding: 2px 8px !important;
+}
+
+/* Additional overrides for different Ant Design versions */
+.classTable .ant-table-cell,
+.classTable .ant-table-thead > tr > th,
+.classTable .ant-table-tbody > tr > th,
+.classTable .ant-table-tbody > tr > td,
+.classTable tfoot > tr > th,
+.classTable tfoot > tr > td {
+  padding: 2px 8px !important;
+}
+
+/* Target any Ant Design table cell within our table */
+.classTable [class*="ant-table-cell"],
+.classTable [class*="ant-table-thead"] > tr > th,
+.classTable [class*="ant-table-tbody"] > tr > td {
+  padding: 2px 8px !important;
+}
+
+/* Most specific override for Ant Design CSS-in-JS */
+.classTable .ant-table-wrapper .ant-table-cell,
+.classTable .ant-table-wrapper .ant-table-thead > tr > th,
+.classTable .ant-table-wrapper .ant-table-tbody > tr > th,
+.classTable .ant-table-wrapper .ant-table-tbody > tr > td,
+.classTable .ant-table-wrapper tfoot > tr > th,
+.classTable .ant-table-wrapper tfoot > tr > td {
+  padding: 2px 8px !important;
+  min-height: 28px !important;
+  height: 28px !important;
+}
+
+/* Force override with maximum specificity */
+.classTable .ant-table .ant-table-tbody > tr > td {
+  padding: 2px 8px !important;
+}
+
+.classTable .ant-table .ant-table-thead > tr > th {
+  padding: 6px 8px !important;
+}
+
+/* Global override for Ant Design CSS-in-JS classes */
+.classTable [class*="css-dev-only-do-not-override"] .ant-table-cell,
+.classTable [class*="css-dev-only-do-not-override"] .ant-table-thead > tr > th,
+.classTable [class*="css-dev-only-do-not-override"] .ant-table-tbody > tr > td {
+  padding: 2px 8px !important;
+}
+
+.classTable .ant-table-thead > tr > th > * {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* High specificity override for Ant Design CSS-in-JS */
+.classTable.ant-table-wrapper .ant-table-cell,
+.classTable.ant-table-wrapper .ant-table-thead > tr > th,
+.classTable.ant-table-wrapper .ant-table-tbody > tr > td {
+  padding: 2px 8px !important;
+}
+
+/* Target the specific CSS-in-JS class pattern */
+.classTable [class*="css-dev-only-do-not-override"] {
+  padding: 2px 8px !important;
+}
+
+/* Ensure all table cells have reduced padding */
+.classTable .ant-table-tbody > tr > td,
+.classTable .ant-table-thead > tr > th {
+  padding: 2px 8px !important;
+  min-height: 28px;
+  height: 28px;
+  vertical-align: middle;
+}
+
+/* Direct override for the specific CSS-in-JS selector */
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-cell,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-thead>tr>th,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-tbody>tr>th,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-tbody>tr>td,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper tfoot>tr>th,
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper tfoot>tr>td {
+  padding: 2px 8px !important;
+  min-height: 28px !important;
+  height: 28px !important;
+  vertical-align: middle !important;
+}
+
+/* Header color override for Ant Design table */
+.classTable .ant-table-thead > tr > th {
+  background-color: #04306f !important;
+  color: #ffffff !important;
+}
+
+/* Override for CSS-in-JS header styling */
+.classTable :where(.css-dev-only-do-not-override-xepvsj).ant-table-wrapper .ant-table-thead>tr>th {
+  background-color: #04306f !important;
+  color: #ffffff !important;
+}
+
+/* Additional header color overrides */
+.classTable .ant-table-wrapper .ant-table-thead > tr > th {
+  background-color: #04306f !important;
+  color: #ffffff !important;
+}
+
+.classTable [class*="css-dev-only-do-not-override"] .ant-table-thead > tr > th {
+  background-color: #04306f !important;
+  color: #ffffff !important;
+}
+
+/* Ensure header text is white and visible */
+.classTable .ant-table-thead > tr > th,
+.classTable .ant-table-thead > tr > th * {
+  color: #ffffff !important;
+}
+
+/* Override any existing header background */
+.classTable .ant-table-thead {
+  background-color: #04306f !important;
+}
+
+.classTable .ant-table-thead > tr {
+  background-color: #04306f !important;
+}
