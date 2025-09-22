@@ -9,7 +9,7 @@ import {
   InfoCircleOutlined,
   LoadingOutlined,
   CloseCircleOutlined,
-} from "@ant-design/icons";
+} from "@ant-design/icons/";
 import {
   Badge,
   Empty,
@@ -22,7 +22,8 @@ import {
   Switch,
   Tooltip,
   Table,
-} from "antd";
+  Pagination,
+} from "antd/lib";
 import {
   auditStatusTemplate,
   processstatusBodyTemplate,
@@ -43,17 +44,8 @@ import {
 import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { priorityOptions, priorityStatus } from "../headerFilters/functions";
-import Legends from "../legends";
-import { bullets } from "../../pages/reviewer/patients";
-import { auditBullets } from "../../pages/supervisor/auditing";
-import { CircularProgressbar } from "react-circular-progressbar";
-import EditButton from "../../images/adminUsers/EditButton";
-import EditButtonDisbled from "../../images/adminUsersDisabled/EditButtonDisabled";
 import { faArrowsRotate, faUpload, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { batchBullets } from "../../commonPages/patients";
 import { useRouter } from "next/router";
-import { Paginator } from "primereact/paginator";
 import { useState, useMemo } from "react";
 
 const AppTable = ({
@@ -300,35 +292,7 @@ const AppTable = ({
         columnConfig.render = (text, record, rowIndex) => renderDownloadCell(item, record, rowIndex);
       }
 
-      if (item.status || item?.auditedStatus || item?.batchStatus) {
-        columnConfig.title = (
-          <div className="d-flex align-items-center">
-            {item?.headerName?.toUpperCase()}
-            {item?.infoIcon && (
-              <Popover
-                content={
-                  <Legends
-                    bullets={
-                      item.auditedStatus
-                        ? auditBullets
-                        : item?.batchStatus
-                        ? batchBullets
-                        : bullets
-                    }
-                    display="block"
-                    padding="0 0px 10px 0"
-                  />
-                }
-                trigger={["click"]}
-                placement="bottom"
-              >
-                <InfoCircleFilled className={`font2 ${Style.infoIcon}`} />
-              </Popover>
-            )}
-          </div>
-        );
-        columnConfig.align = "center";
-      }
+  
 
       if (item.isTooltip) {
         columnConfig.title = (
@@ -388,29 +352,6 @@ const AppTable = ({
       return (
         <div className="d-flex align-items-center">
           <div className="">{item[`${columnItem.actualField}`]}</div>
-        </div>
-      );
-    }
-
-    // Handle priority column
-    if (columnItem?.design?.includes("PRIORITY")) {
-      return (
-        <div className="text-secondary">
-          <Select
-            options={priorityOptions}
-            placeholder="Set priority"
-            className={`custom-ant-select ${Style.customAntSelect}`}
-            showSearch={false}
-            value={item?.priority || undefined}
-            onClick={(e) => e.stopPropagation()}
-            onChange={
-              handlePriorityChange
-                ? (value) => handlePriorityChange(item?.tinNumber, value)
-                : undefined
-            }
-            disabled={!handlePriorityChange}
-            style={{ width: "100%" }}
-          />
         </div>
       );
     }
@@ -561,30 +502,6 @@ const AppTable = ({
     // Handle computation status
     if (columnItem?.design?.includes("COMPUTATION_STATUS")) {
       return statusBodyTemplate && statusBodyTemplate(item);
-    }
-
-    // Handle audit status
-    if (columnItem.auditedStatus) {
-      return (
-        <div className="d-flex justify-content-center">
-          {auditStatusTemplate(
-            item[`${columnItem.value}`],
-            columnItem.isIcon
-          )}
-        </div>
-      );
-    }
-
-    // Handle dynamic audit status
-    if (columnItem?.design?.includes("AUDIT_STATUS")) {
-      return (
-        <div className="d-flex justify-content-center">
-          {dynamicAuditStatusTemplate(
-            item[`${columnItem.actualField}`],
-            columnItem.isIcon
-          )}
-        </div>
-      );
     }
 
     // Handle progress bar
@@ -1197,7 +1114,7 @@ const AppTable = ({
 
           {isPagination && (
             <div className="pagination-container">
-              <Paginator
+              <Pagination
                 id={
                   tableId
                     ? createIdGen("pagination" + tableId)
