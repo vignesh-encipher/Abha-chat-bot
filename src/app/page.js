@@ -41,10 +41,17 @@ export default function Home() {
       
       console.log(`Fetching page ${page}: start=${start}, end=${end}`);
       
-      const response = await fetch(`'https://3a26a0b284ae.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
+      const response = await requestPortal(`https://3f8331aabf12.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
+        'Authorization': 'Bearer ',
+        'Content-Type': 'application/json',
+        'X-Role-Id': 'Summa',
+        'X-Tenant': 'Summa',
+        'X-Client': 'Summa',
+        'X-Org': 'Summa',
+        'X-Project': 'Summa',
+        'X-Org-based': 'Summa',
         }
       });
       

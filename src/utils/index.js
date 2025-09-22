@@ -2,7 +2,7 @@
 // Import SweetAlert2 for modal functionality
 import Swal from 'sweetalert2';
 
-const portalUrl = 'https://3a26a0b284ae.ngrok-free.app/';
+const portalUrl = 'https://3f8331aabf12.ngrok-free.app';
 
 // Storage helper functions
 const setStorage = (key, value) => {
@@ -213,7 +213,7 @@ export async function checkStatus(response) {
 export async function requestPortal(url, options) {
   // const { client = null, project = null, roleId = null, orgId = null } = getLocalStored();
 //   const token = getStorage(tokenKey);
-  const actualUrl = `${portalUrl}${url}`;
+  const actualUrl = `${url}`;
   const actualOptions = {
     ...options,
     headers: {
@@ -226,6 +226,7 @@ export async function requestPortal(url, options) {
       "X-Org": "Summa",
       "X-Project": "Summa",
       "X-Org-based": "Summa",
+      "X-user":"test",
       ...options.headers, // Merge custom headers from options
     },
   };
