@@ -3,6 +3,7 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/reset.css";
 import "../styles/patient-chat.css";
+import ReduxProvider from "../components/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,7 @@ export const metadata = {
   description: "A modern Next.js application with Bootstrap and Ant Design integration",
 };
 
-export default function RootLayout({ children }) {
+function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -27,8 +28,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );
 }
+
+export default RootLayout;

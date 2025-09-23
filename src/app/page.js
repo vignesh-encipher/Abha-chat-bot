@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Card, Row, Col, Typography, Space, Button, Tag, Avatar, message, Drawer, Input, List } from 'antd';
 import { 
   UserOutlined, 
@@ -13,16 +13,18 @@ import {
   SendOutlined,
   RobotOutlined
 } from '@ant-design/icons';
+import { connect } from 'react-redux';
 
 // Import the table component
 import ReusableTable from '../components/table/index.js';
-// Import the API utility
-import { requestPortal } from '../utils/index.js';
+// Import Redux actions
+import { tableAction } from '../store/table/actions.js';
 
 const { Title, Paragraph } = Typography;
 
-export default function Home() {
-  const [loading, setLoading] = useState(false);
+function Home({ tableData, fetchPatients }) {
+  const { loading, data, error } = tableData;
+  
   const [chatDrawerVisible, setChatDrawerVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
@@ -33,38 +35,28 @@ export default function Home() {
   const [totalPatients, setTotalPatients] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const fetchPatients = async (start, end) => {
-    setLoading(true);
-    try {
-      
-      const url = `/api/patient-list?start=${start}&end=${end}`;
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+  const handleFetchPatients = (start, end) => {
+    fetchPatients(start, end);
+  };
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
+  // Handle Redux data updates
+  useEffect(() => {
+    if (data && data.response) {
+      // Handle both array and single object responses
+      const patientsArray = data.response.admissionPatientList;
+      setPatientsData(patientsArray);
       
-      const data = await response.json();
-      
-      if (data && data.response) {
-        // Handle both array and single object responses
-        const patientsArray = data.response.admissionPatientList;
-        setPatientsData(patientsArray);
-        
-        // Set total count and calculate total pages
-        const totalRecords = data.response.totalNoOfRecord;
-        setPageSize(20);
-        setTotalPatients(totalRecords);
-        setTotalPages(Math.ceil(totalRecords / 30));
-      }
-    } catch (error) {
+      // Set total count and calculate total pages
+      const totalRecords = data.response.totalNoOfRecord;
+      setPageSize(20);
+      setTotalPatients(totalRecords);
+      setTotalPages(Math.ceil(totalRecords / 30));
+    }
+  }, [data]);
+
+  // Handle Redux errors
+  useEffect(() => {
+    if (error) {
       console.error('Error fetching patients:', error);
       
       // More specific error messages
@@ -77,13 +69,11 @@ export default function Home() {
       } else {
         message.error(`Failed to fetch patient data: ${error.message}`);
       }
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [error]);
   
   React.useEffect(() => {
-    fetchPatients(1, 20);
+    handleFetchPatients(1, 20);
   }, []);
   
   const patientsColumns = [
@@ -172,7 +162,7 @@ export default function Home() {
     // }
     const start = ((page - 1) * 20) + 1;
     const end = page * 20;
-    fetchPatients(start, end);
+    handleFetchPatients(start, end);
   };
 
   // Handle chat button click
@@ -465,3 +455,14 @@ export default function Home() {
     </div>
   );
 }
+
+const enhancer = connect(
+  (state) => ({
+    tableData: state.table.table,
+  }),
+  {
+    fetchPatients: tableAction,
+  }
+);
+
+export default enhancer(Home);

@@ -1,0 +1,1 @@
+export const portalUrl = "https://34d3946f9f58.ngrok-free.app";
