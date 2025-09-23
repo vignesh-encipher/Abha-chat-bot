@@ -4,7 +4,7 @@ export async function GET(request) {
   const end = searchParams.get('end');
 
   try {
-    const response = await fetch(`https://a77018084f4b.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
+    const response = await fetch(`https://34d3946f9f58.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
       method: 'GET',
       headers: {
         // 'ngrok-skip-browser-warning': 'true',
