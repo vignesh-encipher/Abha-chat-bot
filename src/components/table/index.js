@@ -17,6 +17,7 @@ const ReusableTable = ({
   showSizeChanger = true,
   showQuickJumper = true,
   showTotal = true,
+  totalText = 'items',
   rowKey = 'id',
   size = 'middle',
   bordered = false,
@@ -159,20 +160,12 @@ const ReusableTable = ({
         )
       )
     : data;
-
   // Table configuration
   const tableConfig = {
     dataSource: filteredData,
     columns: [...columns],
     loading,
-    pagination: pagination ? {
-      pageSize,
-      showSizeChanger,
-      showQuickJumper,
-      showTotal: showTotal ? (total, range) => 
-        `${range[0]}-${range[1]} of ${total} items` : undefined,
-      pageSizeOptions: ['10', '20', '50', '100'],
-    } : false,
+    pagination: pagination,
     rowKey,
     size,
     bordered,

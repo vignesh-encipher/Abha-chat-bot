@@ -29,34 +29,26 @@ export default function Home() {
   const [inputMessage, setInputMessage] = useState('');
   const [patientsData, setPatientsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(30);
+  const [pageSize, setPageSize] = useState(0);
   const [totalPatients, setTotalPatients] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const fetchPatients = async (page, size) => {
+  const fetchPatients = async (start, end) => {
     setLoading(true);
     try {
-      const start = (page - 1) * size + 1; // 1-based indexing
-      const end = page * size; // 1-based indexing
       
-      console.log(`Fetching page ${page}: start=${start}, end=${end}`);
-      
-      const response = await requestPortal(`https://3f8331aabf12.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
+      const url = `/api/patient-list?start=${start}&end=${end}`;
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
-        'Authorization': 'Bearer ',
-        'Content-Type': 'application/json',
-        'X-Role-Id': 'Summa',
-        'X-Tenant': 'Summa',
-        'X-Client': 'Summa',
-        'X-Org': 'Summa',
-        'X-Project': 'Summa',
-        'X-Org-based': 'Summa',
+          'Content-Type': 'application/json'
         }
       });
-      
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
       
       const data = await response.json();
@@ -68,20 +60,30 @@ export default function Home() {
         
         // Set total count and calculate total pages
         const totalRecords = data.response.totalNoOfRecord;
+        setPageSize(20);
         setTotalPatients(totalRecords);
-        setTotalPages(Math.ceil(totalRecords / size));
-        
-        console.log(`Total records: ${totalRecords}, Total pages: ${Math.ceil(totalRecords / size)}`);
+        setTotalPages(Math.ceil(totalRecords / 30));
       }
     } catch (error) {
       console.error('Error fetching patients:', error);
-      message.error('Failed to fetch patient data');
+      
+      // More specific error messages
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        message.error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+      } else if (error.message.includes('CORS')) {
+        message.error('CORS error: The server is not allowing requests from this domain.');
+      } else if (error.message.includes('HTTP error')) {
+        message.error(`Server error: ${error.message}`);
+      } else {
+        message.error(`Failed to fetch patient data: ${error.message}`);
+      }
     } finally {
       setLoading(false);
     }
   };
+  
   React.useEffect(() => {
-    fetchPatients(currentPage, pageSize);
+    fetchPatients(1, 20);
   }, []);
   
   const patientsColumns = [
@@ -165,10 +167,12 @@ export default function Home() {
   const handlePaginationChange = (page, size) => {
     console.log(`Page changed to: ${page}, Size: ${size}`);
     setCurrentPage(page);
-    if (size !== pageSize) {
-      setPageSize(size);
-    }
-    fetchPatients(page, size || pageSize);
+    // if (size !== pageSize) {
+    //   setPageSize(size);
+    // }
+    const start = ((page - 1) * 20) + 1;
+    const end = page * 20;
+    fetchPatients(start, end);
   };
 
   // Handle chat button click
@@ -220,11 +224,10 @@ export default function Home() {
   };
 
   return (
-    <div className="container-fluid p-4">
-      <div className="row mb-5">
-        <div className="col-12">
-          <Card title="Patients List">
-            <ReusableTable
+    <div className="fixed-page-container">
+      <div className="table-container">
+        <Card className="table-card">
+          <ReusableTable
               data={patientsData}
               columns={patientsColumns}
               rowKey={(record) => `${record.mrnNo}-${record.admNo}-${record.docCode}`}
@@ -239,20 +242,27 @@ export default function Home() {
                 pageSize: pageSize,
                 total: totalPatients,
                 onChange: handlePaginationChange,
-                onShowSizeChange: handlePaginationChange,
-                showSizeChanger: true,
-                showQuickJumper: true,
-                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} patients`,
-                pageSizeOptions: ['30', '50', '100'],
-                showLessItems: true
+                // onShowSizeChange: handlePaginationChange,
+                showSizeChanger: false,
+                // showQuickJumper: true,
+                showTotal: (total, range) => {
+                  // console.log('Pagination showTotal - total:', total, 'range:', range);
+                  return `${range[0]}-${range[1]} of ${total} patients`;
+                },
+                // pageSizeOptions: ['30', '50', '100'],
+                // showLessItems: true
               }}
+              totalText="patients"
               striped={true}
               hoverable={true}
               size="small"
+              style={{
+                '--ant-table-row-height': '25px'
+              }}
+              className="compact-table"
             />
           </Card>
         </div>
-      </div>
 
       {/* Chat Bot Drawer */}
       <Drawer

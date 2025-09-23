@@ -43,3 +43,159 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Fixed page layout */
+.fixed-page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.page-header {
+  flex-shrink: 0;
+  padding: 16px;
+  background: white;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.header-card {
+  margin: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.header-content h2 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.header-content p {
+  margin: 0;
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+.table-container {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-card .ant-card-body {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Compact table styles for reduced row height */
+.compact-table {
+  flex: 1;
+  overflow: hidden;
+}
+
+.compact-table .ant-table-tbody > tr > td {
+  padding: 8px 12px !important;
+  height: 25px !important;
+  line-height: 1.2 !important;
+}
+
+.compact-table .ant-table-thead > tr > th {
+  padding: 8px 12px !important;
+  height: 36px !important;
+  line-height: 1.2 !important;
+  font-weight: 600;
+}
+
+.compact-table .ant-table-tbody > tr {
+  height: 32px !important;
+}
+
+.compact-table .ant-table-thead > tr {
+  height: 36px !important;
+}
+
+/* Reduce avatar size in compact table */
+.compact-table .ant-avatar {
+  width: 28px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+}
+
+/* Reduce button size in compact table */
+.compact-table .ant-btn-sm {
+  height: 24px !important;
+  padding: 0 8px !important;
+  font-size: 12px !important;
+}
+
+/* Reduce tag size in compact table */
+.compact-table .ant-tag {
+  font-size: 11px !important;
+  padding: 2px 6px !important;
+  line-height: 1.2 !important;
+}
+
+/* Ensure table container takes full height and scrolls */
+.compact-table .ant-table-container {
+  height: 100% !important;
+}
+
+.compact-table .ant-table-body {
+  overflow-y: auto !important;
+  max-height: calc(100vh - 200px) !important;
+}
+
+/* Hide scrollbar for cleaner look (optional) */
+.compact-table .ant-table-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.compact-table .ant-table-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.compact-table .ant-table-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.compact-table .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Center pagination */
+.compact-table .ant-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 16px 0 !important;
+  padding: 0 16px !important;
+}
+
+.compact-table .ant-pagination .ant-pagination-options {
+  margin-left: 16px !important;
+}
+
+/* Ensure pagination stays at bottom of table */
+.compact-table .ant-table-pagination {
+  text-align: center !important;
+  margin-top: 40px !important;
+  align-items: center !important;
+}

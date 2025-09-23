@@ -219,7 +219,7 @@ export async function requestPortal(url, options) {
     headers: {
       Authorization: `${"Bearer" + " "}`,
       "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": "true",
+      // "ngrok-skip-browser-warning": "true",
       "X-Role-Id": "Summa",
       "X-Tenant": "Summa",
       "X-Client": "Summa",
