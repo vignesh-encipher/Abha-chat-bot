@@ -180,6 +180,19 @@ body {
   background: #a8a8a8;
 }
 
+/* Optimize input performance */
+.ant-input {
+  will-change: auto !important;
+  transform: translateZ(0) !important;
+}
+
+/* Optimize chat input specifically */
+.modern-chat-input {
+  will-change: auto !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
 /* Center pagination */
 .compact-table .ant-pagination {
   display: flex !important;

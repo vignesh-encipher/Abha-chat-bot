@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Card, Row, Col, Typography, Space, Button, Tag, Avatar, message, Drawer, Input, List } from 'antd';
 import { 
   UserOutlined, 
@@ -190,38 +190,46 @@ export default function Home() {
   };
 
   // Handle sending a message
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     if (inputMessage.trim()) {
+      const currentMessage = inputMessage;
+      const currentTime = new Date().toLocaleTimeString();
+      
       const newMessage = {
-        id: chatMessages.length + 1,
+        id: Date.now(), // Use timestamp for unique ID
         type: 'user',
-        message: inputMessage,
-        timestamp: new Date().toLocaleTimeString()
+        message: currentMessage,
+        timestamp: currentTime
       };
       
-      setChatMessages([...chatMessages, newMessage]);
+      setChatMessages(prev => [...prev, newMessage]);
       setInputMessage('');
       
       // Simulate bot response
       setTimeout(() => {
         const botResponse = {
-          id: chatMessages.length + 2,
+          id: Date.now() + 1,
           type: 'bot',
-          message: `I understand you're asking about "${inputMessage}". Let me help you with that regarding ${selectedProduct?.name}.`,
+          message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
           timestamp: new Date().toLocaleTimeString()
         };
         setChatMessages(prev => [...prev, botResponse]);
       }, 1000);
     }
-  };
+  }, [inputMessage, selectedProduct]);
+
+  // Handle input change
+  const handleInputChange = useCallback((e) => {
+    setInputMessage(e.target.value);
+  }, []);
 
   // Handle drawer close
-  const handleDrawerClose = () => {
+  const handleDrawerClose = useCallback(() => {
     setChatDrawerVisible(false);
     setSelectedProduct(null);
     setChatMessages([]);
     setInputMessage('');
-  };
+  }, []);
 
   return (
     <div className="fixed-page-container">
@@ -417,7 +425,7 @@ export default function Home() {
               <Input
                 placeholder="Type your message..."
                 value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
+                onChange={handleInputChange}
                 onPressEnter={handleSendMessage}
                 style={{ 
                   flex: 1, 

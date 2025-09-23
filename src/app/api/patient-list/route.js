@@ -1,13 +1,13 @@
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const start = searchParams.get('start') || '0';
-  const end = searchParams.get('end') || '10';
+  const start = searchParams.get('start') ;
+  const end = searchParams.get('end');
 
   try {
     const response = await fetch(`https://a77018084f4b.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
       method: 'GET',
       headers: {
-        'ngrok-skip-browser-warning': 'true',
+        // 'ngrok-skip-browser-warning': 'true',
         'Authorization': 'Bearer ',
         'Content-Type': 'application/json',
         'X-Role-Id': 'Summa',
