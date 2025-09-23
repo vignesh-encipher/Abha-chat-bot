@@ -36,7 +36,6 @@ export default function Home() {
   const fetchPatients = async (start, end) => {
     setLoading(true);
     try {
-      
       const url = `/api/patient-list?start=${start}&end=${end}`;
       const response = await fetch(url, {
         method: 'GET',
@@ -205,15 +204,45 @@ export default function Home() {
       setChatMessages(prev => [...prev, newMessage]);
       setInputMessage('');
       
-      // Simulate bot response
-      setTimeout(() => {
-        const botResponse = {
-          id: Date.now() + 1,
-          type: 'bot',
-          message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
-          timestamp: new Date().toLocaleTimeString()
-        };
-        setChatMessages(prev => [...prev, botResponse]);
+      // Get bot response from API
+      setTimeout(async () => {
+        try{
+          const response = await fetch(`/api/chat?prompt=${encodeURIComponent(currentMessage)}&mrNo=${selectedProduct?.mrnNo}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          console.log('Chat response:', data);
+          
+          // Use API response as bot message
+          const botResponse = {
+            id: Date.now() + 1,
+            type: 'bot',
+            message: data.response || data.message || `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
+            timestamp: new Date().toLocaleTimeString()
+          };
+          setChatMessages(prev => [...prev, botResponse]);
+        }
+        catch(error){
+          console.error('Error sending message:', error);
+          message.error('Failed to send message to AI assistant');
+          
+          // Fallback message on error
+          const botResponse = {
+            id: Date.now() + 1,
+            type: 'bot',
+            message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
+            timestamp: new Date().toLocaleTimeString()
+          };
+          setChatMessages(prev => [...prev, botResponse]);
+        }
       }, 1000);
     }
   }, [inputMessage, selectedProduct]);
@@ -344,7 +373,7 @@ export default function Home() {
                         maxWidth: '75%',
                         height:"100%",
                         padding: '16px 20px',
-                        borderRadius: item.type === 'user' ? '24px 24px 8px 24px' : '8px 24px 24px 24px',
+                        borderRadius: item.type === 'user' ? '24px 8px 24px 24px' : '8px 24px 24px 24px',
                         background: item.type === 'user' 
                           ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
                           : 'rgba(255,255,255,0.95)',

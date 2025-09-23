@@ -4,10 +4,10 @@ export async function GET(request) {
   const end = searchParams.get('end');
 
   try {
-    const response = await fetch(`https://34d3946f9f58.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
+    const response = await fetch(`https://7ce5237ecc49.ngrok-free.app/dbservice/am/patient-list?start=${start}&end=${end}`, {
       method: 'GET',
       headers: {
-        // 'ngrok-skip-browser-warning': 'true',
+        'ngrok-skip-browser-warning': 'true',
         'Authorization': 'Bearer ',
         'Content-Type': 'application/json',
         'X-Role-Id': 'Summa',
