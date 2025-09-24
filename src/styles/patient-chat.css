@@ -1,4 +1,4 @@
-/* @keyframes fadeInUp {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -19,19 +19,43 @@
   100% {
     transform: scale(1);
   }
-} */
+}
+
+@keyframes typing {
+  0%, 20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes typingDots {
+  0%, 20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
 .modern-chat-message {
   animation: fadeInUp 0.3s ease-out;
 }
 
-.modern-chat-message:hover {
-  /* transform: translateY(-2px); */
-}
+/* .modern-chat-message:hover {
+  transform: translateY(-2px);
+} */
 
-.modern-send-button:hover {
-  /* animation: pulse 0.3s ease; */
-}
+/* .modern-send-button:hover {
+  animation: pulse 0.3s ease;
+} */
 
 .patient-html-content h2 {
   color: #000;
@@ -83,4 +107,44 @@
 .patient-html-content::-webkit-scrollbar-thumb {
   background: #000;
   border-radius: 2px;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #666;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 2px;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #666;
+  animation: typingDots 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
+
+/* Smooth scrolling for chat container */
+.chat-container {
+  scroll-behavior: smooth;
 }

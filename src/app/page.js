@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Card, Row, Col, Typography, Space, Button, Tag, Avatar, message, Drawer, Input, List } from 'antd';
 import { 
   UserOutlined, 
@@ -11,7 +11,8 @@ import {
   DownloadOutlined,
   UploadOutlined,
   SendOutlined,
-  RobotOutlined
+  RobotOutlined,
+  LoadingOutlined
 } from '@ant-design/icons';
 
 // Import the table component
@@ -32,6 +33,20 @@ export default function Home() {
   const [pageSize, setPageSize] = useState(0);
   const [totalPatients, setTotalPatients] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [isBotTyping, setIsBotTyping] = useState(false);
+  const chatContainerRef = useRef(null);
+
+  // Function to scroll to bottom of chat
+  const scrollToBottom = useCallback(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, []);
+
+  // Auto-scroll when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages, scrollToBottom]);
 
   const fetchPatients = async (start, end) => {
     setLoading(true);
@@ -204,6 +219,24 @@ export default function Home() {
       setChatMessages(prev => [...prev, newMessage]);
       setInputMessage('');
       
+      // Show loading state
+      setIsBotTyping(true);
+      
+      // Add loading message
+      const loadingMessage = {
+        id: 'loading-' + Date.now(),
+        type: 'bot',
+        message: 'Typing',
+        timestamp: new Date().toLocaleTimeString(),
+        isLoading: true
+      };
+      setChatMessages(prev => [...prev, loadingMessage]);
+      
+      // Ensure scroll to bottom after adding messages
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+      
       // Get bot response from API
       setTimeout(async () => {
         try{
@@ -221,27 +254,45 @@ export default function Home() {
           const data = await response.json();
           console.log('Chat response:', data);
           
-          // Use API response as bot message
-          const botResponse = {
-            id: Date.now() + 1,
-            type: 'bot',
-            message: data.response || data.message || `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
-            timestamp: new Date().toLocaleTimeString()
-          };
-          setChatMessages(prev => [...prev, botResponse]);
+          // Remove loading message and add bot response
+          setChatMessages(prev => {
+            const filteredMessages = prev.filter(msg => msg.id !== loadingMessage.id);
+            const botResponse = {
+              id: Date.now() + 1,
+              type: 'bot',
+              message: data.response || data.message || `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
+              timestamp: new Date().toLocaleTimeString()
+            };
+            return [...filteredMessages, botResponse];
+          });
+          
+          // Ensure scroll to bottom after bot response
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
         }
         catch(error){
           console.error('Error sending message:', error);
           message.error('Failed to send message to AI assistant');
           
-          // Fallback message on error
-          const botResponse = {
-            id: Date.now() + 1,
-            type: 'bot',
-            message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
-            timestamp: new Date().toLocaleTimeString()
-          };
-          setChatMessages(prev => [...prev, botResponse]);
+          // Remove loading message and add fallback response
+          setChatMessages(prev => {
+            const filteredMessages = prev.filter(msg => msg.id !== loadingMessage.id);
+            const botResponse = {
+              id: Date.now() + 1,
+              type: 'bot',
+              message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
+              timestamp: new Date().toLocaleTimeString()
+            };
+            return [...filteredMessages, botResponse];
+          });
+          
+          // Ensure scroll to bottom after error response
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
+        } finally {
+          setIsBotTyping(false);
         }
       }, 1000);
     }
@@ -328,13 +379,16 @@ export default function Home() {
           position: 'relative'
         }}>
           {/* Chat Messages Container */}
-          <div style={{ 
-            flex: 1, 
-            overflowY: 'auto', 
-            padding: '20px',
-            background: 'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(10px)'
-          }}>
+          <div 
+            ref={chatContainerRef}
+            className="chat-container"
+            style={{ 
+              flex: 1, 
+              overflowY: 'auto', 
+              padding: '20px',
+              background: 'rgba(255,255,255,0.05)',
+              backdropFilter: 'blur(10px)'
+            }}>
             <List
               dataSource={chatMessages}
               renderItem={(item, index) => (
@@ -387,16 +441,27 @@ export default function Home() {
                         position: 'relative'
                       }}
                     >
-                      <div 
-                        style={{ 
-                          fontSize: '14px', 
-                          lineHeight: '1.6', 
-                          fontWeight: '400',
-                          color: item.type === 'user' ? 'white' : '#333'
-                        }}
-                        className="patient-html-content"
-                        dangerouslySetInnerHTML={{ __html: item.message }}
-                      />
+                      {item.isLoading ? (
+                        <div className="typing-indicator">
+                          <span>Thinking</span>
+                          <div className="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div 
+                          style={{ 
+                            fontSize: '14px', 
+                            lineHeight: '1.6', 
+                            fontWeight: '400',
+                            color: item.type === 'user' ? 'white' : '#333'
+                          }}
+                          className="patient-html-content"
+                          dangerouslySetInnerHTML={{ __html: item.message }}
+                        />
+                      )}
                       <div
                         style={{
                           fontSize: '11px',
@@ -467,9 +532,9 @@ export default function Home() {
               />
               <Button
                 type="primary"
-                icon={<SendOutlined />}
+                icon={isBotTyping ? <LoadingOutlined /> : <SendOutlined />}
                 onClick={handleSendMessage}
-                disabled={!inputMessage.trim()}
+                disabled={!inputMessage.trim() || isBotTyping}
                 className="modern-send-button"
                 style={{
                   borderRadius: '50%',
@@ -478,11 +543,11 @@ export default function Home() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: inputMessage.trim() 
+                  background: (inputMessage.trim() && !isBotTyping)
                     ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
                     : '#d9d9d9',
                   border: 'none',
-                  boxShadow: inputMessage.trim() 
+                  boxShadow: (inputMessage.trim() && !isBotTyping)
                     ? '0 4px 16px rgba(102, 126, 234, 0.3)' 
                     : 'none'
                 }}
