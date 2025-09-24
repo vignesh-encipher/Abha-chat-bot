@@ -57,6 +57,16 @@
   animation: pulse 0.3s ease;
 } */
 
+/* ChatGPT-like font styling */
+.content-font {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-variation-settings: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .patient-html-content h2 {
   color: #000;
   font-size: 18px;
@@ -64,6 +74,7 @@
   margin: 0 0 12px 0;
   padding-bottom: 8px;
   border-bottom: 2px solid #000;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .patient-html-content h3 {
@@ -71,6 +82,7 @@
   font-size: 16px;
   font-weight: 500;
   margin: 16px 0 8px 0;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .patient-html-content ul {
@@ -82,17 +94,26 @@
   margin: 6px 0;
   line-height: 1.5;
   color: #000;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .patient-html-content strong {
   color: #000;
   font-weight: 700;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .patient-html-content {
-  max-height: 400px;
+  /* max-height: 400px; */
   overflow-y: auto;
   padding: 4px;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .patient-html-content::-webkit-scrollbar {
@@ -117,6 +138,7 @@
   line-height: 1.6;
   font-weight: 400;
   color: #666;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .typing-dots {
@@ -147,4 +169,43 @@
 /* Smooth scrolling for chat container */
 .chat-container {
   scroll-behavior: smooth;
+}
+
+/* Streaming cursor animation */
+.streaming-cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+  font-weight: bold;
+  color: #667eea;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* ChatGPT-like message styling */
+.chatgpt-message {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apply ChatGPT font to all text elements */
+.chatgpt-font p,
+.chatgpt-font div,
+.chatgpt-font span,
+.chatgpt-font li,
+.chatgpt-font td,
+.chatgpt-font th {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }

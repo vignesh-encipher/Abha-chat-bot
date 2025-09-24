@@ -22,7 +22,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Custom styles to prevent conflicts between Bootstrap and Ant Design */
