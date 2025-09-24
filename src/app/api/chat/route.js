@@ -15,6 +15,7 @@ export async function GET(request) {
     }
 
     // Build the external API URL with both prompt and mrNo parameters
+    // https://qacogentamapi.encipherhealth.com/secure/
     const externalUrl = new URL('https://7ce5237ecc49.ngrok-free.app/dbservice/am/chat');
     externalUrl.searchParams.set('prompt', prompt);
     if (mrNo) {
