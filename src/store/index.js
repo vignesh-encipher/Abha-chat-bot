@@ -4,6 +4,9 @@ import promiseMiddleware from "redux-promise";
 import { createWrapper } from "next-redux-wrapper";
 import { reducer as TableReducer } from "./table";
 
+// Import logger for development
+import { logger } from "redux-logger";
+
 const reducers = combineReducers({
   table: TableReducer,
 });
@@ -12,7 +15,6 @@ const reducers = combineReducers({
 const middlewares = [thunk, promiseMiddleware];
 
 if (process.env.NODE_ENV === "development") {
-  const { logger } = require("redux-logger");
   middlewares.push(logger);
 }
 

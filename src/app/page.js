@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card, Row, Col, Typography, Space, Button, Tag, Avatar, message, Drawer, Input, List } from 'antd';
 import { 
   UserOutlined, 
@@ -11,32 +11,98 @@ import {
   DownloadOutlined,
   UploadOutlined,
   SendOutlined,
-  RobotOutlined
+  RobotOutlined,
+  LoadingOutlined
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
 // Import the table component
 import ReusableTable from '../components/table/index.js';
 // Import Redux actions
-import { tableAction } from '../store/table/actions.js';
+import { tableAction, tableActionChat } from '../store/table/actions.js';
 
 const { Title, Paragraph } = Typography;
 
-function Home({ tableData, fetchPatients }) {
+function Home({ tableData, fetchPatients, fetchPatientsChat ,tableDataChat}) {
   const { loading, data, error } = tableData;
+  const { loadingChat, dataChat, errorChat } = tableDataChat;
   
+  // const [loading, setLoading] = useState(false);
   const [chatDrawerVisible, setChatDrawerVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(0);
   const [totalPatients, setTotalPatients] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [isBotTyping, setIsBotTyping] = useState(false);
+  const [streamingMessageId, setStreamingMessageId] = useState(null);
+  const chatContainerRef = useRef(null);
+
+  // Function to scroll to bottom of chat
+  const scrollToBottom = useCallback(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, []);
+
+  // Auto-scroll when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages, scrollToBottom]);
+
+  // Cleanup streaming on unmount
+  useEffect(() => {
+    return () => {
+      setStreamingMessageId(null);
+    };
+  }, []);
+
+  // Function to stream text like ChatGPT
+  const streamText = useCallback(
+    (messageId, fullText, onComplete) => {
+      setStreamingMessageId(messageId);
+      let currentIndex = 0;
+      const words = fullText.split(" ");
+      let currentText = "";
+
+      const streamInterval = setInterval(() => {
+        if (currentIndex < words.length) {
+          currentText += (currentIndex > 0 ? " " : "") + words[currentIndex];
+          currentIndex++;
+
+          // Update the message with current text
+          setChatMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === messageId ? { ...msg, message: currentText } : msg
+            )
+          );
+
+          // Scroll to bottom during streaming
+          setTimeout(() => {
+            scrollToBottom();
+          }, 50);
+        } else {
+          clearInterval(streamInterval);
+          setStreamingMessageId(null);
+          if (onComplete) onComplete();
+        }
+      }, 10); // Adjust speed here (lower = faster)
+
+      return streamInterval;
+    },
+    [scrollToBottom]
+  );
 
   const handleFetchPatients = (start, end) => {
+   try{
     fetchPatients(start, end);
+   } catch (error) {
+    console.error('Error fetching patients:', error);
+   }
   };
 
   // Handle Redux data updates
@@ -54,23 +120,85 @@ function Home({ tableData, fetchPatients }) {
     }
   }, [data]);
 
-  // Handle Redux errors
+  // Handle chat response from Redux
   useEffect(() => {
-    if (error) {
-      console.error('Error fetching patients:', error);
-      
-      // More specific error messages
-      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-        message.error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
-      } else if (error.message.includes('CORS')) {
-        message.error('CORS error: The server is not allowing requests from this domain.');
-      } else if (error.message.includes('HTTP error')) {
-        message.error(`Server error: ${error.message}`);
-      } else {
-        message.error(`Failed to fetch patient data: ${error.message}`);
-      }
+    if (dataChat && dataChat.response) {
+      // Remove loading message and add bot response
+      setChatMessages((prev) => {
+        const filteredMessages = prev.filter(
+          (msg) => !msg.isLoading
+        );
+        const botResponse = {
+          id: Date.now() + 1,
+          type: "bot",
+          message:
+            dataChat.response.response ||
+            dataChat.message ||
+            `I understand your question. Let me help you with that regarding ${
+              selectedProduct?.mrnNo || "this patient"
+            }.`,
+          timestamp: new Date().toLocaleTimeString(),
+          base64: dataChat.response.base64,
+        };
+        return [...filteredMessages, botResponse];
+      });
+
+      // Ensure scroll to bottom after bot response
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+      setIsBotTyping(false);
     }
-  }, [error]);
+  }, [dataChat, selectedProduct, scrollToBottom]);
+
+  // Handle chat errors
+  useEffect(() => {
+    if (errorChat) {
+      console.error("Chat error:", errorChat);
+      message.error("Failed to send message to AI assistant");
+
+      // Remove loading message and add fallback response
+      setChatMessages((prev) => {
+        const filteredMessages = prev.filter(
+          (msg) => !msg.isLoading
+        );
+        const botResponse = {
+          id: Date.now() + 1,
+          type: "bot",
+          message: `I understand your question. Let me help you with that regarding ${
+            selectedProduct?.mrnNo || "this patient"
+          }.`,
+          timestamp: new Date().toLocaleTimeString(),
+        };
+        return [...filteredMessages, botResponse];
+      });
+
+      // Ensure scroll to bottom after error response
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+      setIsBotTyping(false);
+    }
+  }, [errorChat, selectedProduct, scrollToBottom]);
+
+  // Handle Redux errors
+  // useEffect(() => {
+  //   if (error) {
+  //     console.error('Error fetching patients:', error);
+      
+  //     // More specific error messages
+  //     if (error.name === 'TypeError' && error.message && error.message.includes('Failed to fetch')) {
+  //       message.error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+  //     } else if (error.message && error.message.includes('CORS')) {
+  //       message.error('CORS error: The server is not allowing requests from this domain.');
+  //     } else if (error.message && error.message.includes('HTTP error')) {
+  //       message.error(`Server error: ${error.message}`);
+  //     } else {
+  //       const errorMessage = error.message || error.toString() || 'Unknown error occurred';
+  //       message.error(`Failed to fetch patient data: ${errorMessage}`);
+  //     }
+  //   }
+  // }, [error]);
   
   React.useEffect(() => {
     handleFetchPatients(1, 20);
@@ -142,125 +270,167 @@ function Home({ tableData, fetchPatients }) {
     }
   ];
 
-  // Custom actions for patients table
-  const handleProductSelection = (selectedRowKeys, selectedRows) => {
-    console.log('Selected patients:', selectedRowKeys, selectedRows);
-    message.info(`Selected ${selectedRowKeys.length} patient(s)`);
-  };
+ // Custom actions for patients table
+ const handleProductSelection = (selectedRowKeys, selectedRows) => {
+  console.log("Selected patients:", selectedRowKeys, selectedRows);
+  message.info(`Selected ${selectedRowKeys.length} patient(s)`);
+};
 
-  // Handle search
-  const handleSearch = (searchText) => {
-    console.log('Searching for:', searchText);
-  };
+// Handle search
+const handleSearch = (searchText) => {
+  console.log("Searching for:", searchText);
+};
 
-  // Handle pagination
-  const handlePaginationChange = (page, size) => {
-    console.log(`Page changed to: ${page}, Size: ${size}`);
-    setCurrentPage(page);
-    // if (size !== pageSize) {
-    //   setPageSize(size);
-    // }
-    const start = ((page - 1) * 20) + 1;
-    const end = page * 20;
-    handleFetchPatients(start, end);
-  };
+// Handle pagination
+const handlePaginationChange = (page, size) => {
+  console.log(`Page changed to: ${page}, Size: ${size}`);
+  setCurrentPage(page);
+  // if (size !== pageSize) {
+  //   setPageSize(size);
+  // }
+  const start = (page - 1) * 20 + 1;
+  const end = page * 20;
+  fetchPatients(start, end);
+};
 
-  // Handle chat button click
-  const handleChatClick = (record) => {
-    setSelectedProduct(record);
-    setChatMessages([
-      {
-        id: 1,
-        type: 'bot',
-        message: record.htmlContent ,
-        timestamp: new Date().toLocaleTimeString()
+// Handle chat button click
+const handleChatClick = (record) => {
+  setSelectedProduct(record);
+  setChatMessages([
+    {
+      id: 1,
+      type: "bot",
+      message: record.htmlContent,
+      timestamp: new Date().toLocaleTimeString(),
+    },
+  ]);
+  setChatDrawerVisible(true);
+};
+
+// Handle sending a message
+const handleSendMessage = useCallback(() => {
+  if (inputMessage.trim()) {
+    const currentMessage = inputMessage;
+    const currentTime = new Date().toLocaleTimeString();
+
+    const newMessage = {
+      id: Date.now(), // Use timestamp for unique ID
+      type: "user",
+      message: currentMessage,
+      timestamp: currentTime,
+    };
+
+    setChatMessages((prev) => [...prev, newMessage]);
+    setInputMessage("");
+
+    // Show loading state
+    setIsBotTyping(true);
+
+    // Add loading message
+    const loadingMessage = {
+      id: "loading-" + Date.now(),
+      type: "bot",
+      message: "Typing",
+      timestamp: new Date().toLocaleTimeString(),
+      isLoading: true,
+    };
+    setChatMessages((prev) => [...prev, loadingMessage]);
+
+    // Ensure scroll to bottom after adding messages
+    setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+
+    // Get bot response from API
+    setTimeout(() => {
+      try {
+        fetchPatientsChat(currentMessage, selectedProduct?.mrnNo);
+      } catch (error) {
+        console.error("Error sending message:", error);
+        message.error("Failed to send message to AI assistant");
+
+        // Remove loading message and add fallback response
+        setChatMessages((prev) => {
+          const filteredMessages = prev.filter(
+            (msg) => msg.id !== loadingMessage.id
+          );
+          const botResponse = {
+            id: Date.now() + 1,
+            type: "bot",
+            message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${
+              selectedProduct?.mrnNo || "this patient"
+            }.`,
+            timestamp: new Date().toLocaleTimeString(),
+          };
+          return [...filteredMessages, botResponse];
+        });
+
+        // Ensure scroll to bottom after error response
+        setTimeout(() => {
+          scrollToBottom();
+        }, 100);
+      } finally {
+        setIsBotTyping(false);
       }
-    ]);
-    setChatDrawerVisible(true);
-  };
+    }, 1000);
+  }
+}, [inputMessage, selectedProduct]);
 
-  // Handle sending a message
-  const handleSendMessage = useCallback(() => {
-    if (inputMessage.trim()) {
-      const currentMessage = inputMessage;
-      const currentTime = new Date().toLocaleTimeString();
-      
-      const newMessage = {
-        id: Date.now(), // Use timestamp for unique ID
-        type: 'user',
-        message: currentMessage,
-        timestamp: currentTime
-      };
-      
-      setChatMessages(prev => [...prev, newMessage]);
-      setInputMessage('');
-      
-      // Simulate bot response
-      setTimeout(() => {
-        const botResponse = {
-          id: Date.now() + 1,
-          type: 'bot',
-          message: `I understand you're asking about "${currentMessage}". Let me help you with that regarding ${selectedProduct?.mrnNo || 'this patient'}.`,
-          timestamp: new Date().toLocaleTimeString()
-        };
-        setChatMessages(prev => [...prev, botResponse]);
-      }, 1000);
-    }
-  }, [inputMessage, selectedProduct]);
+// Handle input change
+const handleInputChange = useCallback((e) => {
+  setInputMessage(e.target.value);
+}, []);
 
-  // Handle input change
-  const handleInputChange = useCallback((e) => {
-    setInputMessage(e.target.value);
-  }, []);
-
-  // Handle drawer close
-  const handleDrawerClose = useCallback(() => {
-    setChatDrawerVisible(false);
-    setSelectedProduct(null);
-    setChatMessages([]);
-    setInputMessage('');
-  }, []);
+// Handle drawer close
+const handleDrawerClose = useCallback(() => {
+  setChatDrawerVisible(false);
+  setSelectedProduct(null);
+  setChatMessages([]);
+  setInputMessage("");
+}, []);
 
   return (
     <div className="fixed-page-container">
       <div className="table-container">
         <Card className="table-card">
           <ReusableTable
-              data={patientsData}
-              columns={patientsColumns}
-              rowKey={(record) => `${record.mrnNo}-${record.admNo}-${record.docCode}`}
-              loading={loading}
-              selectable={false}
-              onRowSelect={handleProductSelection}
-              // actions={patientActions}
-              searchable={false}
-              onSearch={handleSearch}
-              pagination={{
-                current: currentPage,
-                pageSize: pageSize,
-                total: totalPatients,
-                onChange: handlePaginationChange,
-                // onShowSizeChange: handlePaginationChange,
-                showSizeChanger: false,
-                // showQuickJumper: true,
-                showTotal: (total, range) => {
-                  // console.log('Pagination showTotal - total:', total, 'range:', range);
-                  return `${range[0]}-${range[1]} of ${total} patients`;
-                },
-                // pageSizeOptions: ['30', '50', '100'],
-                // showLessItems: true
-              }}
-              totalText="patients"
-              striped={true}
-              hoverable={true}
-              size="small"
-              style={{
-                '--ant-table-row-height': '25px'
-              }}
-              className="compact-table"
-            />
-          </Card>
-        </div>
+            data={patientsData}
+            columns={patientsColumns}
+            rowKey={(record) =>
+              `${record.mrnNo}-${record.admNo}-${record.docCode}`
+            }
+            loading={loading}
+            selectable={false}
+            onRowSelect={handleProductSelection}
+            // actions={patientActions}
+            searchable={false}
+            onSearch={handleSearch}
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              total: totalPatients,
+              onChange: handlePaginationChange,
+              // onShowSizeChange: handlePaginationChange,
+              showSizeChanger: false,
+              // showQuickJumper: true,
+              showTotal: (total, range) => {
+                // console.log('Pagination showTotal - total:', total, 'range:', range);
+                return `${range[0]}-${range[1]} of ${total} patients`;
+              },
+              // pageSizeOptions: ['30', '50', '100'],
+              // showLessItems: true
+            }}
+            totalText="patients"
+            striped={true}
+            hoverable={true}
+            size="small"
+            style={{
+              "--ant-table-row-height": "25px",
+            }}
+            className="compact-table"
+          />
+        </Card>
+      </div>
 
       {/* Chat Bot Drawer */}
       <Drawer
@@ -281,110 +451,175 @@ function Home({ tableData, fetchPatients }) {
           </Button>
         }
       >
-        <div style={{ 
-          height: '100%', 
-          display: 'flex', 
-          flexDirection: 'column',
-          background: '#FFF',
-          position: 'relative'
-        }}>
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            background: "#FFF",
+            position: "relative",
+          }}
+        >
           {/* Chat Messages Container */}
-          <div style={{ 
-            flex: 1, 
-            overflowY: 'auto', 
-            padding: '20px',
-            background: 'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(10px)'
-          }}>
+          <div
+            ref={chatContainerRef}
+            className="chat-container"
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              padding: "20px",
+              background: "rgba(255,255,255,0.05)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
             <List
               dataSource={chatMessages}
               renderItem={(item, index) => (
-                <List.Item style={{ border: 'none', padding: '12px 0' }}>
+                <List.Item style={{ border: "none", padding: "12px 0" }}>
                   <div
                     className="modern-chat-message"
                     style={{
-                      display: 'flex',
-                      justifyContent: item.type === 'user' ? 'flex-end' : 'flex-start',
-                      width: '100%',
-                      alignItems: 'flex-start',
-                      gap: '12px',
-                      animationDelay: `${index * 0.1}s`
+                      display: "flex",
+                      justifyContent:
+                        item.type === "user" ? "flex-end" : "flex-start",
+                      width: "100%",
+                      alignItems: "flex-start",
+                      gap: "12px",
+                      animationDelay: `${index * 0.1}s`,
                     }}
                   >
-                    {item.type === 'bot' && (
-                      <div style={{
-                        width: 40,
-                        height: 40,
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontSize: '18px',
-                        marginTop: '4px',
-                        boxShadow: '0 4px 16px rgba(102, 126, 234, 0.3)',
-                        border: '2px solid rgba(255,255,255,0.2)'
-                      }}>
+                    {item.type === "bot" && (
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          background:
+                            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "white",
+                          fontSize: "18px",
+                          marginTop: "4px",
+                          boxShadow: "0 4px 16px rgba(102, 126, 234, 0.3)",
+                          border: "2px solid rgba(255,255,255,0.2)",
+                        }}
+                      >
                         <UserOutlined />
                       </div>
                     )}
                     <div
                       style={{
-                        maxWidth: '75%',
-                        height:"100%",
-                        padding: '16px 20px',
-                        borderRadius: item.type === 'user' ? '24px 24px 8px 24px' : '8px 24px 24px 24px',
-                        background: item.type === 'user' 
-                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                          : 'rgba(255,255,255,0.95)',
-                        color: item.type === 'user' ? 'white' : '#333',
-                        wordWrap: 'break-word',
-                        boxShadow: item.type === 'user' 
-                          ? '0 8px 32px rgba(102, 126, 234, 0.3)' 
-                          : '0 4px 16px rgba(0,0,0,0.1)',
-                        border: item.type === 'bot' ? '1px solid rgba(255,255,255,0.2)' : 'none',
+                        maxWidth: "75%",
+                        height: "100%",
+                        padding: "16px 20px",
+                        borderRadius:
+                          item.type === "user"
+                            ? "24px 8px 24px 24px"
+                            : "8px 24px 24px 24px",
+                        background:
+                          item.type === "user"
+                            ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                            : "rgba(255,255,255,0.95)",
+                        color: item.type === "user" ? "white" : "#333",
+                        wordWrap: "break-word",
+                        boxShadow:
+                          item.type === "user"
+                            ? "0 8px 32px rgba(102, 126, 234, 0.3)"
+                            : "0 4px 16px rgba(0,0,0,0.1)",
+                        border:
+                          item.type === "bot"
+                            ? "1px solid rgba(255,255,255,0.2)"
+                            : "none",
                         // backdropFilter: 'blur(10px)',
-                        position: 'relative'
+                        position: "relative",
                       }}
                     >
-                      <div 
-                        style={{ 
-                          fontSize: '14px', 
-                          lineHeight: '1.6', 
-                          fontWeight: '400',
-                          color: item.type === 'user' ? 'white' : '#333'
-                        }}
-                        className="patient-html-content"
-                        dangerouslySetInnerHTML={{ __html: item.message }}
-                      />
+                      {item.isLoading ? (
+                        <div className="typing-indicator">
+                          <span>Thinking</span>
+                          <div className="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            fontSize: "14px",
+                            lineHeight: "1.6",
+                            fontWeight: "400",
+                            color: item.type === "user" ? "white" : "#333",
+                          }}
+                          className="patient-html-content content-font"
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{ __html: item.message }}
+                          />
+                          {streamingMessageId === item.id && (
+                            <span className="streaming-cursor">|</span>
+                          )}
+                          {item.base64 && item.type === "bot" && (
+                            <div
+                              style={{
+                                marginTop: "10px",
+                                padding: "10px",
+                                backgroundColor: "rgba(255,255,255,0.1)",
+                                borderRadius: "8px",
+                                border: "1px solid rgba(255,255,255,0.2)",
+                              }}
+                            >
+                              <img
+                                src={`${item.base64}`}
+                                alt="Chart"
+                                style={{
+                                  maxWidth: "100%",
+                                  height: "auto",
+                                  borderRadius: "4px",
+                                }}
+                                onLoad={() =>
+                                  console.log("Chart image loaded successfully")
+                                }
+                                onError={(e) =>
+                                  console.log("Chart image failed to load:", e)
+                                }
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                       <div
                         style={{
-                          fontSize: '11px',
+                          fontSize: "11px",
                           opacity: 0.7,
-                          marginTop: '8px',
-                          textAlign: item.type === 'user' ? 'right' : 'left',
-                          fontWeight: '300'
+                          marginTop: "8px",
+                          textAlign: item.type === "user" ? "right" : "left",
+                          fontWeight: "300",
                         }}
                       >
                         {item.timestamp}
                       </div>
                     </div>
-                    {item.type === 'user' && (
-                      <div style={{
-                        width: 40,
-                        height: 40,
-                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontSize: '18px',
-                        marginTop: '4px',
-                        boxShadow: '0 4px 16px rgba(240, 147, 251, 0.3)',
-                        border: '2px solid rgba(255,255,255,0.2)'
-                      }}>
+                    {item.type === "user" && (
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          background:
+                            "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "white",
+                          fontSize: "18px",
+                          marginTop: "4px",
+                          boxShadow: "0 4px 16px rgba(240, 147, 251, 0.3)",
+                          border: "2px solid rgba(255,255,255,0.2)",
+                        }}
+                      >
                         <UserOutlined />
                       </div>
                     )}
@@ -395,57 +630,63 @@ function Home({ tableData, fetchPatients }) {
           </div>
 
           {/* Modern Input Area */}
-          <div style={{ 
-            padding: '20px',
-            background: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(10px)',
-            borderTop: '1px solid rgba(255,255,255,0.2)'
-          }}>
-            <div style={{
-              display: 'flex',
-              gap: '12px',
-              alignItems: 'center',
-              background: 'rgba(255,255,255,0.95)',
-              borderRadius: '25px',
-              padding: '8px 8px 8px 20px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              backdropFilter: 'blur(10px)'
-            }}>
+          <div
+            style={{
+              padding: "20px",
+              background: "rgba(255,255,255,0.1)",
+              backdropFilter: "blur(10px)",
+              borderTop: "1px solid rgba(255,255,255,0.2)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                alignItems: "center",
+                background: "rgba(255,255,255,0.95)",
+                borderRadius: "25px",
+                padding: "8px 8px 8px 20px",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                backdropFilter: "blur(10px)",
+              }}
+            >
               <Input
                 placeholder="Type your message..."
                 value={inputMessage}
                 onChange={handleInputChange}
                 onPressEnter={handleSendMessage}
-                style={{ 
-                  flex: 1, 
-                  border: 'none', 
-                  boxShadow: 'none',
-                  fontSize: '15px',
-                  background: 'transparent'
+                style={{
+                  flex: 1,
+                  border: "none",
+                  boxShadow: "none",
+                  fontSize: "15px",
+                  background: "transparent",
                 }}
                 variant="borderless"
               />
               <Button
                 type="primary"
-                icon={<SendOutlined />}
+                icon={isBotTyping ? <LoadingOutlined /> : <SendOutlined />}
                 onClick={handleSendMessage}
-                disabled={!inputMessage.trim()}
+                disabled={!inputMessage.trim() || isBotTyping}
                 className="modern-send-button"
                 style={{
-                  borderRadius: '50%',
-                  width: '48px',
-                  height: '48px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: inputMessage.trim() 
-                    ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                    : '#d9d9d9',
-                  border: 'none',
-                  boxShadow: inputMessage.trim() 
-                    ? '0 4px 16px rgba(102, 126, 234, 0.3)' 
-                    : 'none'
+                  borderRadius: "50%",
+                  width: "48px",
+                  height: "48px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background:
+                    inputMessage.trim() && !isBotTyping
+                      ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                      : "#d9d9d9",
+                  border: "none",
+                  boxShadow:
+                    inputMessage.trim() && !isBotTyping
+                      ? "0 4px 16px rgba(102, 126, 234, 0.3)"
+                      : "none",
                 }}
               />
             </div>
@@ -459,9 +700,11 @@ function Home({ tableData, fetchPatients }) {
 const enhancer = connect(
   (state) => ({
     tableData: state.table.table,
+    tableDataChat: state.table.tableChat,
   }),
   {
     fetchPatients: tableAction,
+    fetchPatientsChat: tableActionChat,
   }
 );
 

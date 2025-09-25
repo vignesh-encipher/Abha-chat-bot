@@ -10,3 +10,14 @@ export async function tableData(start = 1, end = 20) {
   );
   return data;
 }
+
+export async function tableDataChat(prompt, mrnNo) {
+  const options = {
+    method: "GET",
+  };
+  const data = await requestPortal(
+    `/dbservice/am/patient-list?prompt=${prompt}&mrnNo=${mrnNo}`,
+    options
+  );
+  return data;
+}
