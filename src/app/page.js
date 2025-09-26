@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import Dashboard from '../components/Dashboard';
+import Dashboard from '../components/patientInformation ';
 
 function Home() {
   return <Dashboard />;

@@ -101,7 +101,7 @@ export async function GET(request) {
         console.log('Step 4: Generating plotly figure');
         
         // Generate plotly figure
-        const plotlyResponse = await fetch(`${baseUrl}/generate_plotly_figure?id=${sqlId}`, {
+        const plotlyResponse = await fetch(`${baseUrl}/generate_plotly_figure?id=${sqlId}&chart_type=line`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

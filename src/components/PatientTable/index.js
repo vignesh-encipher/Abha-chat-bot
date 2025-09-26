@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, Avatar, Tag, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import ReusableTable from './table/index.js';
+import ReusableTable from '../table/index.js';
+import './style.css';
 
 const Table = ({
   patientsData,
@@ -19,16 +20,11 @@ const Table = ({
       key: 'profile',
       width: 80,
       render: (mrnNo, record) => (
-        <div style={{ textAlign: 'center' }}>
+        <div className="profile-cell">
           <Avatar 
             size={40} 
             icon={<UserOutlined />}
-            style={{ 
-              backgroundColor: '#1890ff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
+            className="patient-avatar"
           />
         </div>
       ),
@@ -38,7 +34,7 @@ const Table = ({
       dataIndex: 'mrnNo',
       key: 'mrnNo',
       render: (mrnNo) => (
-        <div style={{ fontWeight: 500 }}>
+        <div className="mrn-cell">
           {mrnNo || 'N/A'}
         </div>
       ),
@@ -48,7 +44,7 @@ const Table = ({
       dataIndex: 'admNo',
       key: 'admNo',
       render: (admNo) => (
-        <div style={{ fontWeight: 500 }}>
+        <div className="adm-cell">
           {admNo || 'N/A'}
         </div>
       ),
@@ -58,7 +54,7 @@ const Table = ({
       dataIndex: 'docCode',
       key: 'docCode',
       render: (docCode) => (
-        <Tag color="blue">
+        <Tag color="blue" className="doctor-tag">
           {docCode || 'N/A'}
         </Tag>
       ),
@@ -70,6 +66,7 @@ const Table = ({
         <Button 
           type="primary" 
           size="small"
+          className="chat-button"
           onClick={() => onChatClick(record)}
         >
           Chat

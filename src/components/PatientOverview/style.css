@@ -1,0 +1,77 @@
+/* PatientOverview Component Styles */
+
+.patient-overview {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 24px;
+  margin: 20px;
+}
+
+.patient-header {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 16px;
+}
+
+.patient-title {
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.patient-content {
+  min-height: 200px;
+}
+
+.patient-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9ff;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+  background: #f0f2ff;
+  transform: translateX(4px);
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.detail-value {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+  background: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #999;
+  font-style: italic;
+}

@@ -3,14 +3,17 @@ import { message } from 'antd';
 import { connect } from 'react-redux';
 
 // Import components
-import Table from './PatientTable';
-import Chart from './Chart';
+import Table from '../PatientTable';
+import Chart from '../Chat';
 
 // Import Redux actions
-import { tableAction } from '../store/table/actions.js';
+import { tableAction } from '../../store/table/actions.js';
 
 // Import network utilities
-import { requestExternalAPI } from '../utils/network/index.js';
+import { requestExternalAPI } from '../../utils/network/index.js';
+import Title from 'antd/es/skeleton/Title';
+import Paragraph from 'antd/es/skeleton/Paragraph';
+import './style.css';
 
 const Dashboard = ({ tableData, fetchPatients, tableDataChat }) => {
   const { loading, data } = tableData;
@@ -63,7 +66,7 @@ const Dashboard = ({ tableData, fetchPatients, tableDataChat }) => {
       setPatientsData(patientsArray);
       
       const totalRecords = data.response.totalNoOfRecord;
-      setPageSize(20);
+      setPageSize(18);
       setTotalPatients(totalRecords);
     }
   }, [data]);
@@ -122,15 +125,15 @@ const Dashboard = ({ tableData, fetchPatients, tableDataChat }) => {
   }, [errorChat, selectedProduct, scrollToBottom]);
 
   React.useEffect(() => {
-    handleFetchPatients(1, 20);
+    handleFetchPatients(1, 18);
   }, [handleFetchPatients]);
 
   // Handle pagination
   const handlePaginationChange = (page, size) => {
     console.log(`Page changed to: ${page}, Size: ${size}`);
     setCurrentPage(page);
-    const start = (page - 1) * 20 + 1;
-    const end = page * 20;
+    const start = (page - 1) * 18 + 1;
+    const end = page * 18;
     fetchPatients(start, end);
   };
 
@@ -234,16 +237,6 @@ const Dashboard = ({ tableData, fetchPatients, tableDataChat }) => {
         </div>
       `;
     }
-    
-    // Add SQL query display if available
-    // if (responseData?.sql?.text) {
-    //   botMessage += `
-    //     <div style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
-    //       <h4 style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #333;">🔍 Generated SQL Query</h4>
-    //       <pre style="margin: 0; font-size: 12px; color: #666; background: white; padding: 10px; border-radius: 4px; overflow-x: auto;">${responseData.sql.text}</pre>
-    //     </div>
-    //   `;
-    // }
     
     botMessage += `</div>`;
 
@@ -384,6 +377,14 @@ const Dashboard = ({ tableData, fetchPatients, tableDataChat }) => {
 
   return (
     <div className="fixed-page-container">
+        <div className="dashboard-header">
+        <h1 level={1} className="dashboard-title">
+          ABHA
+        </h1>
+        <Paragraph className="dashboard-subtitle">
+          Patient Data Analytics Dashboard
+        </Paragraph>
+      </div>
       <Table
         patientsData={patientsData}
         loading={loading}
