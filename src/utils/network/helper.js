@@ -25,4 +25,16 @@ const defaultHeaders = {
     }
     return data;
   }
+
+  export async function checkExternalStatus(response) {
+    if (!response.ok) {
+      const error = {
+        status: response.status,
+        statusText: response.statusText,
+        message: `HTTP error! status: ${response.status}`
+      };
+      throw error;
+    }
+    return response.json();
+  }
   

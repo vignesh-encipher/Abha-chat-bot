@@ -16,15 +16,9 @@ export async function requestPortal(url, options) {
   const actualOptions = {
     ...options,
     headers: {
-      Authorization: "Bearer ",
       "Content-Type": "application/json",
-      "X-Role-Id": "Summa",
-      "X-Tenant": "Summa",
-      "X-Client": "Summa",
-      "X-Org": "Summa",
-      "X-Project": "Summa",
-      "X-Org-based": "Summa",
-      "X-user": "test",
+      "X-Tenant": "Tenant",
+      "X-Client": "Client",
       ...options.headers, // Merge custom headers from options
     },
   };

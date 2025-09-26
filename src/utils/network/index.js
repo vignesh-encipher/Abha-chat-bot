@@ -1,6 +1,6 @@
-import { checkStatus } from "./helper";
+import { checkStatus, checkExternalStatus } from "./helper";
 // import { getStorage } from "../storages";
-import { portalUrl, tokenKey } from "../config";
+import { portalUrl } from "../config";
 
 export async function requestPortal(url, options) {
 //   const token = await getStorage(tokenKey);'
@@ -8,29 +8,51 @@ export async function requestPortal(url, options) {
   const actualOptions = {
     ...options,
     headers: {
-      Authorization: `${"Bearer" + " "}`,
       "Content-Type": "application/json",
-      "X-Role-Id": "Summa",
-      "X-Tenant": "Summa",
-      "X-Client": "Summa",
-      "X-Org": "Summa",
-      "X-Project": "Summa",
-      "X-Org-based": "Summa",
-      "X-user": "test",
+      "X-Role-Id": "Role",
+      "X-Tenant": "Tenant",
+      "X-Client": "Client",
     },
   };
   return fetch(actualUrl, actualOptions).then(checkStatus);
 }
 
-export async function requestExternal(url, options, path) {
+export async function requestExternal(url, options) {
   const actualUrl = `${portalUrl}${url}`;
   const actualOptions = {
     ...options,
-    body: JSON.stringify(body),
+    body: JSON.stringify(options.body),
     headers: {
-      Authorization: `${"Bearer" + " " + token}`,
       "Content-Type": "application/json",
+      "X-Tenant": "Tenant",
+      "X-Client": "Client",
     },
   };
   return fetch(actualUrl, actualOptions).then(checkStatus);
+}
+
+export async function requestExternalAPI(url, options = {}) {
+  console.log('Making external API request to:', url);
+  
+  const actualOptions = {
+    method: 'GET',
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      "Cookie": "JSESSIONID.655a5d7d=node0125lr9dsbrmblu8xby3nlblir17.node0",
+      ...options.headers,
+    },
+  };
+  
+  try {
+    console.log('Request options:', actualOptions);
+    const response = await fetch(url, actualOptions);
+    console.log('Response received:', response.status, response.statusText);
+    return await checkExternalStatus(response);
+  } catch (error) {
+    console.error('External API request failed:', error);
+    console.error('URL:', url);
+    console.error('Options:', actualOptions);
+    throw error;
+  }
 }

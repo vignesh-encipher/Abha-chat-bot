@@ -1,1 +1,1 @@
-export const portalUrl = "https://qacogentamapi.encipherhealth.com"; 
+export const portalUrl = "https://qacogentamapi.encipherhealth.com/secure"; 
