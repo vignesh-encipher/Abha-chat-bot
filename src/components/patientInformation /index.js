@@ -151,7 +151,7 @@ const Dashboard = ({
       {
         id: 1,
         type: "bot",
-        message: record.htmlContent,
+        message: `Hello! I'm here to assist you. What would you like to do?`,
         timestamp: new Date().toLocaleTimeString(),
       },
     ]);
