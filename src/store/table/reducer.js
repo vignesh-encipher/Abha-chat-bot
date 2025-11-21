@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
-import { tableAction, tableActionChat } from "./actions";
+import { tableAction, tableActionChat,chatResponse } from "./actions";
 
 const initialState = {
   loading: true,
@@ -33,7 +33,7 @@ const createReducer = (actionType) =>
 
 const rootReducer = combineReducers({
   table: createReducer(tableAction),
-  tableChat: createReducer(tableActionChat),
+  tableChat: createReducer(chatResponse),
 });
 
 export default rootReducer;

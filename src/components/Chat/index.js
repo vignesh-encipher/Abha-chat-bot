@@ -1,9 +1,10 @@
 import React from 'react';
 import { Drawer, Space, Button, Input, List } from 'antd';
 import { RobotOutlined, SendOutlined, LoadingOutlined, UserOutlined } from '@ant-design/icons';
+import ChartRenderer from '../ChartRenderer';
 import './style.css';
 
-const Chart = ({
+const Chat = ({
   visible,
   onClose,
   chatMessages,
@@ -48,7 +49,12 @@ const Chart = ({
                   {streamingMessageId === item.id && (
                     <span className="streaming-cursor">|</span>
                   )}
-                  {item.base64 && item.type === "bot" && (
+                  {item.chartData && item.type === "bot" && item.chartData.labels &&  item.chartData.series && (
+                    <div className="chart-container">
+                      <ChartRenderer chartData={item.chartData} />
+                    </div>
+                  )}
+                  {item.base64 && item.type === "bot" && !item.chartData && (
                     <div className="chart-container">
                       <img
                         src={`${item.base64}`}
@@ -97,7 +103,6 @@ const Chart = ({
       }
     >
       <div className="chat-container-wrapper">
-        {/* Chat Messages Container */}
         <div
           ref={chatContainerRef}
           className="chat-container"
@@ -139,4 +144,4 @@ const Chart = ({
   );
 };
 
-export default Chart;
+export default Chat;

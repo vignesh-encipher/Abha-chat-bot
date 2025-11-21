@@ -6,6 +6,11 @@ export const tableAction = createActionThunk(
   network.tableData
 );
 
+export const chatResponse = createActionThunk(
+  "TABLEDATA",
+  network.chatResponse
+);
+
 export const tableActionChat = createActionThunk(
   "TABLEDATACHAT",
   network.tableDataChat

@@ -31,16 +31,17 @@ export async function requestExternal(url, options) {
   return fetch(actualUrl, actualOptions).then(checkStatus);
 }
 
-export async function requestExternalAPI(url, options = {}) {
+export async function requestExternalAPI(url, options) {
   console.log('Making external API request to:', url);
   
   const actualOptions = {
-    method: 'GET',
-    ...options,
+    method: 'post',
+    body: JSON.stringify(options.body),
     headers: {
       "Content-Type": "application/json",
-      "Cookie": "JSESSIONID.655a5d7d=node0125lr9dsbrmblu8xby3nlblir17.node0",
-      ...options.headers,
+      "X-Tenant": "Tenant",
+      "X-Client": "Client",
+       ...options.headers
     },
   };
   

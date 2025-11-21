@@ -5,7 +5,18 @@ export async function tableData(start = 1, end = 20) {
     method: "GET",
   };
   const data = await requestPortal(
-    `/dbservice/am/patient-list?start=${start}&end=${end}`,
+    `/data-agent/patients`,
+    options
+  );
+  return data;
+}
+export async function chatResponse({payload}) {
+  const options = {
+    method: "POST",
+    body:JSON.stringify(payload)
+  };
+  const data = await requestPortal(
+    `/data-agent/query`,
     options
   );
   return data;

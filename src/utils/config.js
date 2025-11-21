@@ -1,1 +1,1 @@
-export const portalUrl = "https://qacogentamapi.encipherhealth.com/secure"; 
+export const portalUrl = "http://9.234.8.1:8080"; 

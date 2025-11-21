@@ -13,11 +13,12 @@ const Table = ({
   onPaginationChange,
   onChatClick
 }) => {
+  console.log(patientsData,"patientsData")
   const patientsColumns = [
     {
       title: 'Profile',
-      dataIndex: 'mrnNo',
-      key: 'profile',
+      dataIndex: 'PATIENT_ID',
+      key: 'PATIENT_ID',
       width: 80,
       render: (mrnNo, record) => (
         <div className="profile-cell">
@@ -30,9 +31,9 @@ const Table = ({
       ),
     },
     {
-      title: 'MRN No',
-      dataIndex: 'mrnNo',
-      key: 'mrnNo',
+      title: 'PATIENT NAME',
+      dataIndex: 'PATIENT_NAME',
+      key: 'PATIENT_NAME',
       render: (mrnNo) => (
         <div className="mrn-cell">
           {mrnNo || 'N/A'}
@@ -40,9 +41,9 @@ const Table = ({
       ),
     },
     {
-      title: 'Admission No',
-      dataIndex: 'admNo',
-      key: 'admNo',
+      title: 'GENDER',
+      dataIndex: 'GENDER',
+      key: 'GENDER',
       render: (admNo) => (
         <div className="adm-cell">
           {admNo || 'N/A'}
@@ -50,9 +51,9 @@ const Table = ({
       ),
     },
     {
-      title: 'Doctor Code',
-      dataIndex: 'docCode',
-      key: 'docCode',
+      title: 'AGE',
+      dataIndex: 'AGE',
+      key: 'AGE',
       render: (docCode) => (
         <Tag color="blue" className="doctor-tag">
           {docCode || 'N/A'}
@@ -82,7 +83,7 @@ const Table = ({
           data={patientsData}
           columns={patientsColumns}
           rowKey={(record) =>
-            `${record.mrnNo}-${record.admNo}-${record.docCode}`
+            `${record.PATIENT_ID}-${record.PATIENT_NAME}`
           }
           loading={loading}
           selectable={false}

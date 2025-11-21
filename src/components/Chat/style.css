@@ -131,17 +131,25 @@
 }
 
 .chart-container {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: rgba(255,255,255,0.1);
+  margin-top: 15px;
+  padding: 15px;
+  background-color: rgba(255,255,255,0.95);
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .chart-image {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
+}
+
+.chart-renderer-container {
+  width: 100%;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
 }
 
 .streaming-cursor {
@@ -211,7 +219,7 @@
   box-shadow: none;
 }
 
-/* Animations */
+/* Animations
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -221,7 +229,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
 
 @keyframes typing {
   0%, 60%, 100% {
@@ -233,7 +241,7 @@
     opacity: 1;
   }
 }
-
+/* 
 @keyframes blink {
   0%, 50% {
     opacity: 1;
@@ -241,4 +249,4 @@
   51%, 100% {
     opacity: 0;
   }
-}
+} */
